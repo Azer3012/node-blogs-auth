@@ -1,5 +1,6 @@
 import express from "express";
 import User from "../models/user.js";
+import PasswordResetModel from "../models/passwordResets.js";
 import multer from "multer";
 import crypto from "crypto";
 import jwt from "jsonwebtoken";
@@ -67,5 +68,43 @@ router.post("/login", async (req, res) => {
     });
   }
 });
+
+router.patch('/password',async(req,res)=>{
+    const {newPassword,resetToken}=req.body
+    const passwordReset=await PasswordResetModel.findOne({resetToken,expired:false})
+
+    const hashedPassword = crypto
+    .pbkdf2Sync(newPassword, SALT, 100000, 64, "sha512")
+    .toString("hex");
+
+    if(passwordReset){
+        //todo if it is expired
+        const userId=passwordReset.user
+        await User.findByIdAndUpdate(userId,{password:hashedPassword})
+        await PasswordResetModel.findByIdAndUpdate(passwordReset._id,{expired:true})
+        res.send({
+            message:"Your password has been reset"
+        })
+    }
+    else{
+        res.send({
+            message:"This password reset request does not exist or expired"
+        })
+    }
+})
+router.post('/password/reset-request',async(req,res)=>{
+    const {email}=req.body;
+    const user=await User.findOne({email})
+
+    const passwordReset=new PasswordResetModel({
+        user:user._id,
+        resetToken:crypto.randomBytes(32).toString('base64')
+
+    })
+
+    //Todo send email to this user
+    await passwordReset.save()
+    res.send("email sent to your email")
+})
 
 export default router;

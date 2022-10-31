@@ -1,15 +1,14 @@
 import express from "express";
 import Blog from "../models/blog.js";
-import Session from "../models/session.js";
 import jwt from "jsonwebtoken";
 const router = express.Router();
 
 router.use(async (req, res, next) => {
   const token = req.headers['authorization'];
 
-  console.log(token);
+  
   if (token) {
-    const data = jwt.verify(token,process.env.JWT_SECRET_KEY, (error, decoded) => {
+    jwt.verify(token,process.env.JWT_SECRET_KEY, (error, decoded) => {
       if (error) {
         res.status(401).send({
           message: error,

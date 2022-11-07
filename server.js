@@ -67,6 +67,7 @@ app.use(errorMiddleware)
 
 const httpServer=http.createServer(app)
 
+//openssl req -x509 -newkey rsa:4096 -nodes -keyout cert/key.pem -out cert/cert.pem -days 365
 const httpsServer=https.createServer({
     key:fs.readFileSync('./cert/key.pem'),
     cert:fs.readFileSync('./cert/cert.pem')

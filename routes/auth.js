@@ -38,4 +38,6 @@ router.patch('/password',resetPassword)
 //password reset request with email
 router.post('/password/reset-request',passwordResetRequest)
 
+
+
 export default router;

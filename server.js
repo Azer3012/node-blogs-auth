@@ -6,6 +6,7 @@ import authRouter from './routes/auth.js'
 import blogRouter from './routes/blog.js'
 import dotenv from 'dotenv'
 import rateLimit from 'express-rate-limit'
+import errorMiddleware from './routes/middleware/errorMiddleware.js'
 
 dotenv.config()
 
@@ -45,5 +46,7 @@ app.all('*',(req,res)=>{
         message:"Requested url not found"
     })
 })
+
+app.use(errorMiddleware)
 
 app.listen(3000,()=>console.log('app listening'))

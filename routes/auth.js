@@ -26,10 +26,21 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage, fileFilter });
 
-router.post("/register", upload.single("image"), async (req, res) => {
-  const { path } = req.file;
+router.post("/register", upload.single("image"), async (req, res,next) => {
   const { firstName, lastName, email, password } = req.body;
+  const { path } = req.file;
+  const existingEmail=await User.find({email})
 
+  if(existingEmail){
+    res.status(400).send({
+      message:"User with this email already exist!"
+    })
+  }
+  else{
+    next()
+  }
+
+  
   const newUser = new User({
     firstName,
     lastName,

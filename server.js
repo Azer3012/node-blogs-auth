@@ -35,17 +35,15 @@ app.use(authRouter)
 app.use('/api/v1',blogRouter)
 
 
-
-
-
-
-
-
-
-
 app.get("/",(req,res)=>{
     res.sendFile(path.resolve('index.html'))
 })
 
+
+app.all('*',(req,res)=>{
+    res.status(404).send({
+        message:"Requested url not found"
+    })
+})
 
 app.listen(3000,()=>console.log('app listening'))

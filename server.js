@@ -1,12 +1,19 @@
 import express from 'express'
 import path from 'path'
 import mongoose from 'mongoose'
-
+import cors from 'cors'
+import helmet from 'helmet'
+import xss from 'xss-clean'
+import mongoSantize from 'express-mongo-sanitize'
 import authRouter from './routes/auth.js'
 import blogRouter from './routes/blog.js'
 import dotenv from 'dotenv'
 import rateLimit from 'express-rate-limit'
 import errorMiddleware from './routes/middleware/errorMiddleware.js'
+import http from 'http'
+import https from 'https'
+import fs from 'fs'
+
 
 dotenv.config()
 
@@ -27,6 +34,14 @@ const limiter=rateLimit({
 app.use(express.json())
 
 app.use(express.urlencoded())
+
+app.use(cors())
+//for security
+app.use(helmet())
+
+//for NoSql injections and XSS(Cros site scripting) attacks
+app.use(mongoSantize())
+app.use(xss())
 
 app.use('/public',express.static(path.resolve('public')))
 
@@ -49,4 +64,15 @@ app.all('*',(req,res)=>{
 
 app.use(errorMiddleware)
 
-app.listen(3000,()=>console.log('app listening'))
+
+const httpServer=http.createServer(app)
+
+const httpsServer=https.createServer({
+    key:fs.readFileSync('./cert/key.pem'),
+    cert:fs.readFileSync('./cert/cert.pem')
+
+},app)
+
+
+httpServer.listen(3000,()=>console.log('app http listening'))
+httpsServer.listen(5000,()=>console.log('app https listening'))

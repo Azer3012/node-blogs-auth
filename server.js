@@ -14,6 +14,8 @@ import http from 'http'
 import https from 'https'
 import fs from 'fs'
 
+import Stripe from 'stripe'
+
 
 dotenv.config()
 
@@ -55,10 +57,33 @@ app.get("/",(req,res)=>{
     res.sendFile(path.resolve('index.html'))
 })
 
+//payment stripe usage
+
+app.get('/payment',async(req,res)=>{
+
+    const myDomain='http://localhost:3000/'
+    const stripe=new Stripe(process.env.STRIPE_SECRET_KEY)
+    const session=await stripe.checkout.sessions.create({
+        mode:"payment",
+        success_url:myDomain+'success-payment',
+        cancel_url:myDomain+'cancel-payment',
+        line_items:[
+            {
+                
+                quantity:1,
+                price:process.env.STRIPE_PRODUCT_PRICE
+                
+            }
+        ]
+    })
+    res.redirect(303,session.url)
+})
+
 
 app.all('*',(req,res)=>{
     res.status(404).send({
         message:"Requested url not found"
+
     })
 })
 

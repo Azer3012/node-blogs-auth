@@ -13,6 +13,7 @@ import errorMiddleware from './routes/middleware/errorMiddleware.js'
 import http from 'http'
 import https from 'https'
 import fs from 'fs'
+import cookieParser from 'cookie-parser'
 
 import Stripe from 'stripe'
 
@@ -40,6 +41,7 @@ app.use(express.urlencoded())
 app.use(cors())
 //for security
 app.use(helmet())
+app.use(cookieParser())
 
 //for NoSql injections and XSS(Cros site scripting) attacks
 app.use(mongoSantize())
@@ -80,6 +82,14 @@ app.get('/payment',async(req,res)=>{
 })
 
 
+///google oauth
+
+app.get('/google/oauth',(req,res)=>{
+    console.log(req.cookies);
+    res.send('ok')
+})
+
+
 app.all('*',(req,res)=>{
     res.status(404).send({
         message:"Requested url not found"
@@ -100,5 +110,5 @@ const httpsServer=https.createServer({
 },app)
 
 
-httpServer.listen(3000,()=>console.log('app http listening'))
+httpServer.listen(8000,()=>console.log('app http listening'))
 httpsServer.listen(5000,()=>console.log('app https listening'))

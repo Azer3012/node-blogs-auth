@@ -5,32 +5,32 @@ import { createNewBlog, deleteBlog, getAllBlogs, selectedBlog, updateBlog } from
 
 const router = express.Router();
 
-router.use(async (req, res, next) => {
-  const token = req.headers['authorization'];
+// router.use(async (req, res, next) => {
+//   const token = req.headers['authorization'];
 
   
-  if (token) {
-    jwt.verify(token,process.env.JWT_SECRET_KEY, (error, decoded) => {
-      if (error) {
-        res.status(401).send({
-          message: error,
-        });
-        return;
-      }
+//   if (token) {
+//     jwt.verify(token,process.env.JWT_SECRET_KEY, (error, decoded) => {
+//       if (error) {
+//         res.status(401).send({
+//           message: error,
+//         });
+//         return;
+//       }
 
-      if (decoded.exp.expiresAt < (Date.now()/1000)) {
-        res.status(401).send("Your session has expired!");
-      } else {
-        req.user = decoded.data;
-        next();
-      }
-    });
-  } else {
-    res.status(401).send({
-      message: "UnAuthorized request",
-    });
-  }
-});
+//       if (decoded.exp.expiresAt < (Date.now()/1000)) {
+//         res.status(401).send("Your session has expired!");
+//       } else {
+//         req.user = decoded.data;
+//         next();
+//       }
+//     });
+//   } else {
+//     res.status(401).send({
+//       message: "UnAuthorized request",
+//     });
+//   }
+// });
 
 //all blogs
 router.get("/blogs",getAllBlogs);

@@ -51,7 +51,7 @@ app.use('/public',express.static(path.resolve('public')))
 
 app.use(limiter)
 
-app.use(authRouter)
+app.use('/api/v1',authRouter)
 app.use('/api/v1',blogRouter)
 
 

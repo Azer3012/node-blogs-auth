@@ -35,13 +35,17 @@ const limiter=rateLimit({
 })
 
 app.use(express.json())
+app.use(cookieParser())
 
 app.use(express.urlencoded())
 
-app.use(cors())
+app.use(cors({
+    origin:process.env.CLIENT_URL,
+    credentials:true
+}))
 //for security
 app.use(helmet())
-app.use(cookieParser())
+
 
 //for NoSql injections and XSS(Cros site scripting) attacks
 app.use(mongoSantize())

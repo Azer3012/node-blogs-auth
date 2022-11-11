@@ -6,7 +6,10 @@ const UserSchema=mongoose.Schema({
     lastName:String,
     email:String,
     password:String,
-    image:String
+    image:{
+        type:String,
+        default:'https://res.cloudinary.com/dmuz6ggje/image/upload/v1668182918/follower_olykor.png'
+    }
 
 })
 

@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import ProtectedRoute from "../../components/ProtectedRoute";
+import MyLayout from "../../Layout";
 import instance from "../../lib/axios";
 const Blogs = () => {
   const [blogs, setBlogs] = useState([]);
@@ -22,9 +24,17 @@ const Blogs = () => {
       cleanUp = false;
     };
   }, []);
-  return blogs.map((blog) => (
-    <Link to={`/blog/${blog._id}`}>{blog.title}</Link>
-  ));
+  return (
+    <ProtectedRoute>
+      <MyLayout>
+     {
+       blogs.map((blog) => (
+        <Link to={`/blog/${blog._id}`}>{blog.title}</Link>
+     ))
+     }
+      </MyLayout>
+    </ProtectedRoute>
+  )
 };
 
 export default Blogs;

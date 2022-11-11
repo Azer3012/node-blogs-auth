@@ -4,36 +4,56 @@ import crypto from "crypto";
 import PasswordResetModel from "../models/passwordResets.js";
 import nodemailer from "nodemailer";
 
+import cloudinary from "cloudinary";
+
 const SALT = "aue";
+
+
+
+
 
 //reguster
 const register = async (req, res, next) => {
   const { firstName, lastName, email, password } = req.body;
-  const { path } = req.file;
 
-  if (firstName && lastName && email && password && path) {
+
+
+cloudinary.v2.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+  
+  console.log(req.file);
+
+  if (firstName && lastName && email && password ) {
     try {
       const existingEmail = await User.find({ email });
+
+      console.log(existingEmail);
+
 
       if (existingEmail) {
         res.status(400).send({
           message: "User with this email already exist!",
         });
-      } else {
-        next();
-      }
+      } 
+      const result = await cloudinary.v2.uploader.upload(req.file.path);
+
 
       const newUser = new User({
         firstName,
         lastName,
         email,
         password,
-        image: path,
+        image: result.secure_url,
       });
       await newUser.save();
       res.status(200).send("ok");
     } catch (error) {
-      next(error);
+      // next(error);
+      console.log(error);
     }
   }
 };

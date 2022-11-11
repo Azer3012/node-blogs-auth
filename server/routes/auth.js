@@ -2,6 +2,8 @@ import express from "express";
 
 import multer from "multer";
 
+
+
 import { login, passwordResetRequest, register, resetPassword } from "../controllers/authController.js";
 
 const router = express.Router();
@@ -24,6 +26,9 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage, fileFilter });
+
+
+
 
 
 //register

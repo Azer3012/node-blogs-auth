@@ -1,13 +1,16 @@
 
-import {Routes,Route} from 'react-router-dom'
+import {Routes,Route,Navigate} from 'react-router-dom'
 import Blogs from './pages/Blogs';
 import Blog from './pages/BlogDetail';
 import Login from './pages/Login';
 import Registration from './pages/Registration';
+import Dashboard from './pages/Dasboard';
 function App() {
   return (
     <Routes>
-      <Route index element={<h1>home pages</h1>} />
+      <Route index element={<Navigate to="/dashboard"/>} />
+      <Route path='/dashboard' element={<Dashboard/>} />
+
       <Route path='/auth/login' element={<Login/>} />
       <Route path='/auth/registration' element={<Registration/>} />
       <Route path='/blogs'element={<Blogs/>} /> 

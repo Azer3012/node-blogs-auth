@@ -4,7 +4,7 @@ import multer from "multer";
 
 
 
-import { getUserInfo, login, passwordResetRequest, register, resetPassword } from "../controllers/authController.js";
+import { getUserInfo, login, logout, passwordResetRequest, register, resetPassword } from "../controllers/authController.js";
 import { authMiddleware } from "./middleware/authMiddleware.js";
 
 
@@ -47,6 +47,10 @@ router.patch('/password',resetPassword)
 
 //password reset request with email
 router.post('/password/reset-request',passwordResetRequest)
+
+//logout
+
+router.post('/logout',authMiddleware,logout)
 
 
 

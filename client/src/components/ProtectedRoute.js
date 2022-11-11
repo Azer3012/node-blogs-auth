@@ -1,13 +1,19 @@
-import axios from 'axios'
+
 import React, { useEffect, useState } from 'react'
 import { Navigate, useNavigate } from 'react-router-dom'
+import {useDispatch,useSelector} from 'react-redux'
 import instance from '../lib/axios'
+import { setLoading, setUser } from '../redux/features/UserSlice'
 
-const TokenRoute = ({children}) => {
+const ProtectedRoute = ({children}) => {
    const navigate=useNavigate()
+   
 
-   const [user, setUser] = useState(null);
+   
    const [fetching, setFetching] = useState(true);
+
+   const {loading}=useSelector(state=>state.user)
+   const dispatch=useDispatch()
 
    const getUser=async()=>{
     setFetching(true)
@@ -15,11 +21,13 @@ const TokenRoute = ({children}) => {
       const response=await instance.get('/getUser')
       
 
-      console.log(response);
+    
       if (!response?.data) {
         navigate('/auth/login');
       } else {
-        setUser(response.data);
+        
+        dispatch(setUser(response.data))
+       
       }
 
     } catch (error) {
@@ -28,6 +36,7 @@ const TokenRoute = ({children}) => {
     }
     finally{
       setFetching(false)
+      dispatch(setLoading(false))
     }
    }
 
@@ -35,7 +44,7 @@ const TokenRoute = ({children}) => {
     getUser()
    },[])
 
-   if (fetching) {
+   if (loading) {
     return <h1>Authorizing...</h1>;
   }
 
@@ -43,4 +52,4 @@ const TokenRoute = ({children}) => {
   return children;
 }
 
-export default TokenRoute
+export default ProtectedRoute

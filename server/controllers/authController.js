@@ -197,6 +197,19 @@ const passwordResetRequest = async (req, res, next) => {
       next(error);
     }
   }
+
+  
 };
 
-export { register, login, resetPassword, passwordResetRequest,getUserInfo };
+//logout
+
+const logout=async(req,res)=>{
+  try {
+    await res.clearCookie('app-access-token',{path:'/'})
+    res.status(200).send()
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export { register, login, resetPassword, passwordResetRequest,getUserInfo,logout };

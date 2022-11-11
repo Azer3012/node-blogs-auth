@@ -1,12 +1,17 @@
 import React from 'react'
-import TokenRoute from '../../components/TokenRoute'
+import ProtectedRoute from '../../components/ProtectedRoute'
+import Layout from '../../Layout'
 
 const Dashboard = () => {
     
   return (
-    <TokenRoute>
+    <ProtectedRoute>
+
+         <Layout>
          <div>Dashboard</div>
-    </TokenRoute>
+
+         </Layout>
+    </ProtectedRoute>
    
   )
 }

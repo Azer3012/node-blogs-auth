@@ -1,4 +1,3 @@
-import e from "express";
 
 const errorMiddleware=(err,req,res,next)=>{
     const message=err.message

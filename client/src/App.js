@@ -10,7 +10,6 @@ function App() {
     <Routes>
       <Route index element={<Navigate to="/dashboard"/>} />
       <Route path='/dashboard' element={<Dashboard/>} />
-
       <Route path='/auth/login' element={<Login/>} />
       <Route path='/auth/registration' element={<Registration/>} />
       <Route path='/blogs'element={<Blogs/>} /> 

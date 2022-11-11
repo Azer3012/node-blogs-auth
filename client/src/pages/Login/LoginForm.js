@@ -14,8 +14,10 @@ const LoginForm = () => {
     try {
       setLoader(true)
       const response=await instance.post('/login',values)
-      localStorage.setItem('token',response.data.accessToken)
+     
       setLoader(false)
+
+      console.log(response);
       navigate('/')
     } catch (error) {
       setLoader(false)

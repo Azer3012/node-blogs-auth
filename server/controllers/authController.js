@@ -25,21 +25,26 @@ cloudinary.v2.config({
 });
 
   
-  console.log(req.file);
-
   if (firstName && lastName && email && password ) {
     try {
-      const existingEmail = await User.find({ email });
+      console.log(email);
+      // const existingEmail = await User.find({ email });
 
-      console.log(existingEmail);
+      // console.log({existingEmail});
 
 
-      if (existingEmail) {
-        res.status(400).send({
-          message: "User with this email already exist!",
-        });
-      } 
-      const result = await cloudinary.v2.uploader.upload(req.file.path);
+      // if (existingEmail) {
+      //   res.status(400).send({
+      //     message: "User with this email already exist!",
+      //   });
+      // } 
+
+      let result=null;
+      
+      if(req?.file?.path){
+         result = await cloudinary.v2.uploader.upload(req.file.path);
+
+      }
 
 
       const newUser = new User({
@@ -47,7 +52,7 @@ cloudinary.v2.config({
         lastName,
         email,
         password,
-        image: result.secure_url,
+        image: result?result.secure_url:undefined,
       });
       await newUser.save();
       res.status(200).send("ok");
@@ -62,34 +67,46 @@ cloudinary.v2.config({
 const login = async (req, res, next) => {
   const { email, password } = req.body;
 
-  if (email && password) {
-    try {
-      const hashedPassword = crypto
-        .pbkdf2Sync(password, SALT, 100000, 64, "sha512")
-        .toString("hex");
+  const hashedPassword = crypto
+    .pbkdf2Sync(password, SALT, 100000, 64, 'sha512')
+    .toString('hex');
 
-      const user = await User.findOne({ email, password: hashedPassword });
+  const user = await User.findOne({
+    email,
+    password: hashedPassword,
+  })
+    .select('_id firstName lastName email image')
+    .exec();
 
-      if (user) {
-        const { password: _, ...rest } = user.toObject();
-        const accessToken = jwt.sign(
-          {
-            data: rest,
-            exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24,
-          },
-          process.env.JWT_SECRET_KEY
-        );
-        res.send({ accessToken });
-      } else {
-        res.status(401).send({
-          message: "Email or password is not correct",
-        });
-      }
-    } catch (error) {
-      next(error);
-    }
+   
+
+  if (user) {
+    const accessToken = jwt.sign(user.toObject(), process.env.JWT_SECRET_KEY, {
+      expiresIn: '12h',
+    });
+
+    res.cookie('app-access-token', accessToken, {
+      maxAge: 60 * 60 * 12 * 1000, // 12h
+      httpOnly: true,
+    });
+
+    res.status(200).send();
+  } else {
+    res.status(401).send({
+      message: 'Username or password is not correct!',
+    });
   }
+
 };
+
+//user info
+
+const getUserInfo=(req,res)=>{
+  console.log('aloo');
+  console.log(req.user);
+  res.status(200).send(req.user)
+}
+
 
 //password reset
 const resetPassword = async (req, res, next) => {
@@ -182,4 +199,4 @@ const passwordResetRequest = async (req, res, next) => {
   }
 };
 
-export { register, login, resetPassword, passwordResetRequest };
+export { register, login, resetPassword, passwordResetRequest,getUserInfo };

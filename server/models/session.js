@@ -7,11 +7,12 @@ const SessionSchema = mongoose.Schema({
   },
   accessToken: String,
   expiresAt: Date,
-  createdAt: {
-    type:Date,
-    default:Date.now
-  },
-});
+  
+},
+{
+  timestamps: true,
+}
+);
 
 const SessionsModel = mongoose.model("sessions", SessionSchema);
 

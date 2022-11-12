@@ -23,5 +23,15 @@
     background: rgba(255, 255, 255, 0.3);
   }
  
+  .main{
+    background: #fff;
+    padding: 20px;
+  }
+  
+  
+  
 
+.layout .like-comments .ant-space-item{
+    color: black;
+}
  

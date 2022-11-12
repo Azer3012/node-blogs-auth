@@ -3,6 +3,7 @@ import {  Breadcrumb, Layout } from 'antd';
 import {useSelector} from 'react-redux'
 import './styles.css'
 import AppHeader from '../components/AppHeader';
+import { Outlet } from 'react-router-dom';
 
 
 const {  Content, Footer } = Layout;
@@ -33,7 +34,9 @@ const MyLayout = ({children}) => {
      <Breadcrumb.Item>List</Breadcrumb.Item>
      <Breadcrumb.Item>App</Breadcrumb.Item>
    </Breadcrumb>
-   <div className="main">{children}</div>
+   <div className="main">
+    <Outlet/>
+   </div>
  </Content>
  <Footer
    style={{

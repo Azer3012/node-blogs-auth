@@ -1,5 +1,5 @@
 import express from "express";
-import { createNewBlog, deleteBlog, getAllBlogs, selectedBlog, updateBlog } from "../controllers/blogController.js";
+import { createNewBlog, deleteBlog, getMyBlogs, selectedBlog, updateBlog } from "../controllers/blogController.js";
 import { authMiddleware } from "./middleware/authMiddleware.js";
 
 
@@ -9,7 +9,7 @@ const router = express.Router();
 router.use(authMiddleware);
 
 //all blogs
-router.get("/blogs",getAllBlogs);
+router.get("/blogs",getMyBlogs);
 
 //selected blog
 router.get("/blogs/:id",selectedBlog);

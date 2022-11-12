@@ -1,14 +1,32 @@
 import Blog from "../models/blog.js";
 
-const getAllBlogs = async (req, res, next) => {
+const getMyBlogs = async (req, res, next) => {
+
+  const userId=req.user._id
+
+  const {page=1,limit=3,filter=''}=req.query;
+
+  const offset=(page-1)*limit
+
+  const titleFilter={$regex: '.*' + filter + '.*',$options:'i'}
   try {
 
-    const blogs = await Blog.find()
+    const blogs = await Blog.find({title:titleFilter})
     .select('_id title body likes tags')
+    .where('author')
+    .equals(userId)
     .populate('author','_id firstName lastName image')
     .sort({createdAt:'desc'})
+    .skip(offset)
+    .limit(limit)
     .exec();
-    res.status(200).send(blogs);
+
+    const total=await Blog.find({title:titleFilter}).where('author')
+    .equals(userId).count()
+    res.status(200).send({
+      list:blogs,
+      total:total
+    });
   } catch (error) {
     next(error);
   }
@@ -59,4 +77,4 @@ const deleteBlog = async (req, res, next) => {
   }
 };
 
-export { getAllBlogs, selectedBlog, createNewBlog, updateBlog, deleteBlog };
+export { getMyBlogs, selectedBlog, createNewBlog, updateBlog, deleteBlog };

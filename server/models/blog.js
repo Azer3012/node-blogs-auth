@@ -9,6 +9,10 @@ const BlogSchema = new mongoose.Schema(
     },
     body: String,
     likes: Number,
+    tags:{
+        type:[String],
+        default:()=>[]
+    }
   },
   {
     timestamps: true,

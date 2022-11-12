@@ -1,5 +1,5 @@
 import React from "react";
-import { List } from "antd";
+import { Button, Input, List } from "antd";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -7,24 +7,38 @@ import ProtectedRoute from "../../components/ProtectedRoute";
 
 import BlogItem from "./BlogItem";
 import { fetchBlogs } from "../../redux/features/blogsSlice";
+import { PlusCircleFilled, SearchOutlined } from "@ant-design/icons";
+import "./styles.css";
+import { Link } from "react-router-dom";
 const Blogs = () => {
   const { list, error, loading } = useSelector((state) => state.blogs);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    let cleanup=true
-    if(cleanup){
+    let cleanup = true;
+    if (cleanup) {
       dispatch(fetchBlogs());
     }
-    
-    return ()=>{
-      cleanup=false
-    }
+
+    return () => {
+      cleanup = false;
+    };
   }, []);
 
   return (
     <ProtectedRoute>
+      <div className="create-blog">
+        <Input
+          className="input"
+          placeholder="search"
+          prefix={<SearchOutlined />}
+        />
+
+        <Link to='/create-blog'>
+          <Button icon={<PlusCircleFilled />}>Create Blog</Button>
+        </Link>
+      </div>
       <List
         itemLayout="vertical"
         size="large"

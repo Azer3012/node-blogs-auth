@@ -4,8 +4,9 @@ const getAllBlogs = async (req, res, next) => {
   try {
 
     const blogs = await Blog.find()
-    .select('_id title body likes')
+    .select('_id title body likes tags')
     .populate('author','_id firstName lastName image')
+    .sort({createdAt:'desc'})
     .exec();
     res.status(200).send(blogs);
   } catch (error) {

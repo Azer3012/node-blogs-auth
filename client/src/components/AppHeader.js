@@ -1,23 +1,27 @@
 import React from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { Navigate, NavLink, useNavigate } from "react-router-dom";
 import { Avatar, Dropdown, Layout, Menu, Space, Typography } from "antd";
 import { DownOutlined } from "@ant-design/icons";
 import instance from "../lib/axios";
+import {useDispatch} from 'react-redux'
+import { setUser } from "../redux/features/UserSlice";
 
 const { Header } = Layout;
 const AppHeader = ({ firstName, lastName, image }) => {
-const navigate=useNavigate()
-    const handleDropdown=async(event)=>{
-        if(event.key==="logout"){
-            try {
-                await instance.post('/logout')
-                navigate('/auth/login')
-            } catch (error) {
-                console.log(error);
-            }
-           
-        }
+  const dispatch=useDispatch()
+  const navigate = useNavigate();
+  const handleDropdown = async (event) => {
+    if (event.key === "logout") {
+      try {
+        await instance.post("/logout");
+        dispatch(setUser(null))
+        navigate("/auth/login");
+
+      } catch (error) {
+        console.log(error);
+      }
     }
+  };
   const navMenu = [
     {
       key: 1,
@@ -36,50 +40,52 @@ const navigate=useNavigate()
     },
   ];
 
-  const dropdownList=(
+  const dropdownList = (
     <Menu
-    onClick={handleDropdown}
-    items = {[
+      onClick={handleDropdown}
+      items={[
         {
-          key: 'profile',
-          label: 'Profile',
+          key: "profile",
+          label: "Profile",
         },
         {
-          key: 'settings',
-          label: 'Settings',
+          key: "settings",
+          label: "Settings",
         },
         {
-          key: 'logout',
-          label: 'Log out',
+          key: "logout",
+          label: "Log out",
         },
-    ]}
+      ]}
     />
-  )
-  
+  );
+
+  const handleMenu = (e) => {
+    const to = e.item.props.to;
+    navigate(to);
+  };
+
   return (
     <Header>
       <div className="logo" />
-      <Menu className="layout-menu" theme="dark" mode="horizontal">
-        {navMenu.map((item) => (
-          <NavLink key={item.key} to={item.to}>
-            <Menu.Item>{item.label}</Menu.Item>
-          </NavLink>
-        ))}
-      </Menu>
+      <Menu
+        className="layout-menu"
+        theme="dark"
+        mode="horizontal"
+        items={navMenu}
+        onClick={handleMenu}
+      ></Menu>
 
-      <Dropdown
-        trigger={'click'}
-        overlay={dropdownList}
-      >
+      <Dropdown trigger={"click"} overlay={dropdownList}>
         <Typography.Text>
           <Space>
-          <Avatar icon="user" src={image} />
-          {firstName}{lastName}
+            <Avatar icon="user" src={image} />
+            {firstName}
+            {lastName}
             <DownOutlined />
           </Space>
         </Typography.Text>
       </Dropdown>
-      
     </Header>
   );
 };

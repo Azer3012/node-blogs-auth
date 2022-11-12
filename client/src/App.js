@@ -7,6 +7,7 @@ import Registration from './pages/Registration';
 import Dashboard from './pages/Dasboard';
 import MyLayout from './Layout';
 import Chat from './pages/Chat';
+import CreateBlog from './pages/CreateBlog';
 function App() {
   return (
     <Routes>
@@ -16,6 +17,7 @@ function App() {
       <Route path='/' element={<MyLayout/>}>
         <Route path='dashboard' element={<Dashboard/>} />
         <Route path='blogs'element={<Blogs/>} /> 
+        <Route path='create-blog'element={<CreateBlog/>} /> 
         <Route path='blog/:id'element={<Blog/>} /> 
         <Route path='chat'element={<Chat/>} /> 
         <Route path='*'element={<h1>404 Not found</h1>} /> 

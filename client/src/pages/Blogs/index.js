@@ -1,40 +1,50 @@
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import ProtectedRoute from "../../components/ProtectedRoute";
-import MyLayout from "../../Layout";
-import instance from "../../lib/axios";
-const Blogs = () => {
-  const [blogs, setBlogs] = useState([]);
-  const getBlogs = async () => {
-    try {
-      const response = await instance.get("/blogs");
+import React from "react";
+import { List } from "antd";
+import { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 
-      setBlogs(response.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+import ProtectedRoute from "../../components/ProtectedRoute";
+
+import BlogItem from "./BlogItem";
+import { fetchBlogs } from "../../redux/features/blogsSlice";
+const Blogs = () => {
+  const { list, error, loading } = useSelector((state) => state.blogs);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    let cleanUp = true;
-    if (cleanUp) {
-      getBlogs();
+    let cleanup=true
+    if(cleanup){
+      dispatch(fetchBlogs());
     }
-    return () => {
-      cleanUp = false;
-    };
+    
+    return ()=>{
+      cleanup=false
+    }
   }, []);
+
   return (
     <ProtectedRoute>
-      <MyLayout>
-     {
-       blogs.map((blog) => (
-        <Link to={`/blog/${blog._id}`}>{blog.title}</Link>
-     ))
-     }
-      </MyLayout>
+      <List
+        itemLayout="vertical"
+        size="large"
+        loading={loading}
+        pagination={{
+          onChange: (page) => {
+            console.log(page);
+          },
+          pageSize: 3,
+        }}
+        dataSource={list}
+        footer={
+          <div>
+            <b>ant design</b> footer part
+          </div>
+        }
+        renderItem={(item) => <BlogItem item={item} />}
+      />
     </ProtectedRoute>
-  )
+  );
 };
 
 export default Blogs;

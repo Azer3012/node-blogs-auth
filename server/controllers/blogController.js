@@ -2,7 +2,11 @@ import Blog from "../models/blog.js";
 
 const getAllBlogs = async (req, res, next) => {
   try {
-    const blogs = await Blog.find().populate("author").exec();
+
+    const blogs = await Blog.find()
+    .select('_id title body likes')
+    .populate('author','_id firstName lastName image')
+    .exec();
     res.status(200).send(blogs);
   } catch (error) {
     next(error);

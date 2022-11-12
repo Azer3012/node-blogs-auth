@@ -1,19 +1,12 @@
-import React from 'react'
-import ProtectedRoute from '../../components/ProtectedRoute'
-import Layout from '../../Layout'
+import React from "react";
+import ProtectedRoute from "../../components/ProtectedRoute";
 
 const Dashboard = () => {
-    
   return (
     <ProtectedRoute>
-
-         <Layout>
-         <div>Dashboard</div>
-
-         </Layout>
+      <div>Dashboard</div>
     </ProtectedRoute>
-   
-  )
-}
+  );
+};
 
-export default Dashboard
+export default Dashboard;

@@ -11,7 +11,12 @@ const UserSchema=mongoose.Schema({
         default:'https://res.cloudinary.com/dmuz6ggje/image/upload/v1668182918/follower_olykor.png'
     }
 
-})
+},
+
+{
+    timestamps: true,
+}
+)
 
 const SALT='aue'
 

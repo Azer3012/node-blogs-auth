@@ -3,6 +3,8 @@ import ProtectedRoute from "../../components/ProtectedRoute";
 import { Button, Form, Input, message, Radio, Select } from "antd";
 import instance from "../../lib/axios";
 import { useNavigate } from "react-router-dom";
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 const CreateBlog = () => {
   
@@ -36,7 +38,8 @@ const CreateBlog = () => {
           <Input placeholder="title" />
         </Form.Item>
         <Form.Item label="Content" name="body" rules={[{required:true,message:"Please write something"}]}>
-          <Input.TextArea placeholder="write something" />
+        <ReactQuill theme="snow"  />
+          {/* <Input.TextArea placeholder="write something" /> */}
         </Form.Item>
         <Form.Item label="Tags" name="tags">
          <Select

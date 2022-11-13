@@ -3,12 +3,13 @@ import { useSelector } from "react-redux";
 import { List, Space, Avatar, Tag, Button } from "antd";
 import { LikeOutlined, LikeTwoTone, MessageOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
-
 import moment from 'moment'
 import useLike from "../../hooks/useLike";
 
 const BlogItem = ({ item }) => {
   const { image,firstName,lastName,_id} = useSelector((state) => state.user.currentUser);
+
+  const blogContent=item?.body.replace(/<[^>]+>/g,'')
  
   const [isIlikedBlog,handleLike]=useLike(item)
 
@@ -49,7 +50,8 @@ const BlogItem = ({ item }) => {
         title={<Link to={`/blog/${item._id}`}>{item.title}</Link>}
         description={item.author.lastName+' '+item.author.firstName}
       />
-      {item.body.substring(0, 200)}...
+      {/* {item.body.substring(0, 200)}... */}
+      {blogContent}
       <div className="tags">
         {item.tags.map((item, index) => (
           <Tag key={index}>{item}</Tag>

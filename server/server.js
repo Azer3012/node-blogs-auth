@@ -49,7 +49,7 @@ app.use(helmet())
 
 //for NoSql injections and XSS(Cros site scripting) attacks
 app.use(mongoSantize())
-app.use(xss())
+// app.use(xss())
 
 app.use('/public',express.static(path.resolve('public')))
 

@@ -64,7 +64,7 @@ const Blog = () => {
             </Button>,
           ]}
         >
-          <p>{blog?.body}</p>
+          <p dangerouslySetInnerHTML={{__html:blog?.body}}></p>
           <div className="tags">
             {blog?.tags?.map((item, index) => (
               <Tag key={index}>{item}</Tag>

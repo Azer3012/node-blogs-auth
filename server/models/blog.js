@@ -8,7 +8,12 @@ const BlogSchema = new mongoose.Schema(
       ref: "users",
     },
     body: String,
-    likes: Number,
+    likes: [
+      {
+        type:"ObjectId",
+        ref:"users"
+      }
+    ],
     tags:{
         type:[String],
         default:()=>[]

@@ -1,31 +1,31 @@
 import Blog from "../models/blog.js";
 
 const getMyBlogs = async (req, res, next) => {
+  const userId = req.user._id;
 
-  const userId=req.user._id
+  const { page = 1, limit = 3, filter = "" } = req.query;
 
-  const {page=1,limit=3,filter=''}=req.query;
+  const offset = (page - 1) * limit;
 
-  const offset=(page-1)*limit
-
-  const titleFilter={$regex: '.*' + filter + '.*',$options:'i'}
+  const titleFilter = { $regex: ".*" + filter + ".*", $options: "i" };
   try {
+    const blogs = await Blog.find({ title: titleFilter })
+      .select("_id title body likes tags")
+      .where("author")
+      .equals(userId)
+      .populate("author", "_id firstName lastName image")
+      .sort({ createdAt: "desc" })
+      .skip(offset)
+      .limit(limit)
+      .exec();
 
-    const blogs = await Blog.find({title:titleFilter})
-    .select('_id title body likes tags')
-    .where('author')
-    .equals(userId)
-    .populate('author','_id firstName lastName image')
-    .sort({createdAt:'desc'})
-    .skip(offset)
-    .limit(limit)
-    .exec();
-
-    const total=await Blog.find({title:titleFilter}).where('author')
-    .equals(userId).count()
+    const total = await Blog.find({ title: titleFilter })
+      .where("author")
+      .equals(userId)
+      .count();
     res.status(200).send({
-      list:blogs,
-      total:total
+      list: blogs,
+      total: total,
     });
   } catch (error) {
     next(error);
@@ -77,4 +77,21 @@ const deleteBlog = async (req, res, next) => {
   }
 };
 
-export { getMyBlogs, selectedBlog, createNewBlog, updateBlog, deleteBlog };
+const likeBlog=async(req,res)=>{
+try {
+  const blog=await Blog.findById(req.params.id)
+  if(blog.likes.includes(req.user._id)){
+    blog.likes=blog.likes.pull(req.user._id)
+  }
+  else{
+    blog.likes.push(req.user._id)
+  }
+  
+  await blog.save()
+  res.status(200).send()
+} catch (error) {
+  console.log(error);
+}
+}
+
+export { getMyBlogs, selectedBlog, createNewBlog, updateBlog, deleteBlog,likeBlog };

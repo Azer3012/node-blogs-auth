@@ -1,5 +1,5 @@
 import express from "express";
-import { createNewBlog, deleteBlog, getMyBlogs, selectedBlog, updateBlog } from "../controllers/blogController.js";
+import { createNewBlog, deleteBlog, getMyBlogs, likeBlog, selectedBlog, updateBlog } from "../controllers/blogController.js";
 import { authMiddleware } from "./middleware/authMiddleware.js";
 
 
@@ -19,6 +19,9 @@ router.post("/blogs",createNewBlog );
 
 //update blog
 router.put("/blogs/:id", updateBlog);
+
+//like
+router.put("/blogs/:id/like", likeBlog);
 
 //delete blog
 router.delete("/blogs/:id", deleteBlog);

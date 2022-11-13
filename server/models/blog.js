@@ -8,6 +8,10 @@ const BlogSchema = new mongoose.Schema(
       ref: "users",
     },
     body: String,
+    comments:[{
+      type:"ObjectId",
+      ref:"comments"
+    }],
     likes: [
       {
         type:"ObjectId",

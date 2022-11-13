@@ -1,11 +1,12 @@
+
 import {createSlice,createAsyncThunk } from '@reduxjs/toolkit'
 import instance from '../../lib/axios'
 
-export const fetchBlogs=createAsyncThunk(
-    'blogs/fetchBlogs',
+export const fetchBlogsDashboard=createAsyncThunk(
+    'dashboard/fetchBlogsDashboard',
      (params)=>{
         
-        return instance.get('/blogs/my',{params}).then(response=>response.data)
+        return instance.get('/blogs',{params}).then(response=>response.data)
     }
 )
 
@@ -17,14 +18,14 @@ const initialState={
     total:0
 
 }
-const blogsSlice=createSlice({
-    name:'blogs',
+const dashboardSlice=createSlice({
+    name:'dashboard',
     initialState,
     reducers:{
-        setCurrentPage:(state,action)=>{
+        setCurrentPageDashboard:(state,action)=>{
             state.currentPage=action.payload
         },
-        toggleLike:(state,action)=>{
+        toggleLikeDashboard:(state,action)=>{
             const {userId,blogId}=action.payload;
             const blog=state.list.find(blog=>blog._id===blogId)
             if(blog.likes.includes(userId)){
@@ -39,10 +40,10 @@ const blogsSlice=createSlice({
         
     },
     extraReducers:{
-        [fetchBlogs.pending]:(state)=>{
+        [fetchBlogsDashboard.pending]:(state)=>{
             state.loading=true
         },
-        [fetchBlogs.fulfilled]:(state,action)=>{
+        [fetchBlogsDashboard.fulfilled]:(state,action)=>{
             state.loading=false
             state.list=action.payload.list
             state.total=action.payload.total
@@ -50,12 +51,12 @@ const blogsSlice=createSlice({
             
 
         },
-        [fetchBlogs.rejected]:(state,action)=>{
+        [fetchBlogsDashboard.rejected]:(state,action)=>{
             state.loading=false;
             state.list=[];
             state.error=action.error
         },
     }
 })
-export const {setCurrentPage,toggleLike} =blogsSlice.actions;
-export default blogsSlice.reducer
+export const {setCurrentPageDashboard,toggleLikeDashboard} =dashboardSlice.actions;
+export default dashboardSlice.reducer

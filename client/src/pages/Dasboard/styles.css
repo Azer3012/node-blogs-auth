@@ -1,0 +1,17 @@
+.create-blog{
+    display: flex;
+    justify-content: space-between
+}
+.input{
+    width: 40%
+}
+.tags{
+    margin-top: 10px;
+}
+.container .ant-list-item-meta-title{
+    margin-bottom: 0;
+}
+.like-count{
+    margin-left: 5px;
+    display: inline-block;
+}

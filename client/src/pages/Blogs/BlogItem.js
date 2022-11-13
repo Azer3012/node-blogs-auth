@@ -1,25 +1,16 @@
 import React from "react";
-import { useSelector,useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { List, Space, Avatar, Tag, Button } from "antd";
-import { LikeOutlined, LikeTwoTone, MessageOutlined, StarOutlined } from "@ant-design/icons";
+import { LikeOutlined, LikeTwoTone, MessageOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
-import instance from "../../lib/axios";
-import { toggleLike } from "../../redux/features/blogsSlice";
+
+import moment from 'moment'
+import useLike from "../../hooks/useLike";
 
 const BlogItem = ({ item }) => {
   const { image,firstName,lastName,_id} = useSelector((state) => state.user.currentUser);
-  const dispath=useDispatch()
-
-  const isIlikedBlog=item.likes.includes(_id)
-
-  const handleLike=async(id)=>{
-    try {
-      await instance.put(`/blogs/${id}/like`)
-      dispath(toggleLike({blogId:id,userId:_id}))
-    } catch (error) {
-      console.log(error);
-    }
-  }
+ 
+  const [isIlikedBlog,handleLike]=useLike(item)
 
   const IconText = ({ icon, text }) => (
     <div className="like-comments">
@@ -32,6 +23,7 @@ const BlogItem = ({ item }) => {
   return (
     <div className="container">
     <List.Item
+    extra={<span>{moment(item.createdAt).fromNow()}</span>}
       key={item.title}
       actions={[
         <Button
@@ -47,7 +39,7 @@ const BlogItem = ({ item }) => {
         
         <IconText
           icon={MessageOutlined}
-          text="2"
+          text={item.comments.length}
           key="list-vertical-message"
         />,
       ]}

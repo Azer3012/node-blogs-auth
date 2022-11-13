@@ -66,11 +66,7 @@ const Blogs = () => {
           current:currentPage
         }}
         dataSource={list}
-        footer={
-          <div>
-            <b>ant design</b> footer part
-          </div>
-        }
+        
         renderItem={(item) => <BlogItem item={item} />}
       />
     </ProtectedRoute>

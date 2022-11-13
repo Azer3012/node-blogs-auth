@@ -5,7 +5,7 @@ export const fetchBlogs=createAsyncThunk(
     'blogs/fetchBlogs',
      (params)=>{
         
-        return instance.get('/blogs',{params}).then(response=>response.data)
+        return instance.get('/blogs/my',{params}).then(response=>response.data)
     }
 )
 
@@ -35,7 +35,8 @@ const blogsSlice=createSlice({
                 
             }
           
-        }
+        },
+        
     },
     extraReducers:{
         [fetchBlogs.pending]:(state)=>{

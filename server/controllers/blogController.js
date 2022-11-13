@@ -1,4 +1,5 @@
 import Blog from "../models/blog.js";
+import Comment from "../models/comments.js";
 
 const getMyBlogs = async (req, res, next) => {
   const userId = req.user._id;
@@ -10,7 +11,7 @@ const getMyBlogs = async (req, res, next) => {
   const titleFilter = { $regex: ".*" + filter + ".*", $options: "i" };
   try {
     const blogs = await Blog.find({ title: titleFilter })
-      .select("_id title body likes tags")
+      .select("_id title body likes tags comments createdAt")
       .where("author")
       .equals(userId)
       .populate("author", "_id firstName lastName image")
@@ -32,9 +33,38 @@ const getMyBlogs = async (req, res, next) => {
   }
 };
 
+const getBlogs=async(req,res)=>{
+  const { page = 1, limit = 3, filter = "" } = req.query;
+
+  const offset = (page - 1) * limit;
+
+  const titleFilter = { $regex: ".*" + filter + ".*", $options: "i" };
+  try {
+    const blogs = await Blog.find({ title: titleFilter })
+      .select("_id title body likes tags comments createdAt")
+      .populate("author", "_id firstName lastName image")
+      .sort({ createdAt: "desc" })
+      .skip(offset)
+      .limit(limit)
+      .exec();
+
+    const total = await Blog.find({ title: titleFilter })
+      .count();
+    res.status(200).send({
+      list: blogs,
+      total: total,
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
 const selectedBlog = async (req, res, next) => {
   try {
-    const blog = await Blog.findById(req.params.id).populate("author").exec();
+    const blog = await Blog.findById(req.params.id)
+    .populate('author','_id firstName lastName image likes')
+    .populate('comments')
+    .exec();
     res.status(200).send(blog);
   } catch (error) {
     next(error);
@@ -94,4 +124,29 @@ try {
 }
 }
 
-export { getMyBlogs, selectedBlog, createNewBlog, updateBlog, deleteBlog,likeBlog };
+const addCommentToBlog=async(req,res)=>{
+
+  try {
+    const comment=new Comment({
+      author:req.user._id,
+      body:req.body.comment
+    })
+  
+    await comment.save()
+  
+    const blog=await Blog.findById(req.params.id)
+
+     blog.comments.push(comment)
+
+     await blog.save()
+
+     const result=await Comment.findById(comment._id)
+
+     res.status(201).send(result)
+
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export { getMyBlogs, selectedBlog, createNewBlog, updateBlog, deleteBlog,likeBlog,addCommentToBlog,getBlogs };

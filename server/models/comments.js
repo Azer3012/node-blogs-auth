@@ -6,10 +6,6 @@ const CommentSchema = new mongoose.Schema(
       type: "ObjectId",
       ref: "users",
     },
-    blog: {
-      type: "ObjectId",
-      ref: "blogs",
-    },
     body: String,
   },
   {
@@ -17,5 +13,9 @@ const CommentSchema = new mongoose.Schema(
   }
 );
 
-const CommentModel = mongoose.model("blogs", CommentSchema);
+CommentSchema.pre(/find.*/,function(){
+  this.populate("author","-password")
+})
+
+const CommentModel = mongoose.model("comments", CommentSchema);
 export default CommentModel;

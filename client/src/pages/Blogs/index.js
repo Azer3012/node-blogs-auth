@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 import ProtectedRoute from "../../components/ProtectedRoute";
 
-import BlogItem from "./BlogItem";
+import BlogItem from "../../components/BlogItem";
 import { fetchBlogs, setCurrentPage } from "../../redux/features/blogsSlice";
 import { PlusCircleFilled, SearchOutlined } from "@ant-design/icons";
 import "./styles.css";

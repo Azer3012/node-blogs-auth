@@ -49,7 +49,7 @@ const getBlogs=async(req,res)=>{
       .exec();
 
     const total = await Blog.find({ title: titleFilter })
-      .count();
+    .count();
     res.status(200).send({
       list: blogs,
       total: total,

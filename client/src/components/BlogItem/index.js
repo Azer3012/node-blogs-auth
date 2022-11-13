@@ -24,7 +24,7 @@ const BlogItem = ({ item }) => {
     <div className="container">
     <List.Item
     extra={<span>{moment(item.createdAt).fromNow()}</span>}
-      key={item.title}
+      key={item.author.title}
       actions={[
         <Button
         key="like-button"
@@ -45,9 +45,9 @@ const BlogItem = ({ item }) => {
       ]}
     >
       <List.Item.Meta
-        avatar={<Avatar src={image} />}
+        avatar={<Avatar src={item.author.image} />}
         title={<Link to={`/blog/${item._id}`}>{item.title}</Link>}
-        description={lastName+' '+firstName}
+        description={item.author.lastName+' '+item.author.firstName}
       />
       {item.body.substring(0, 200)}...
       <div className="tags">

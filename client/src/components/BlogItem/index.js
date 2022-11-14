@@ -35,12 +35,12 @@ const BlogItem = ({ item }) => {
         
         >
           
-          <p className="like-count">{item.likes.length}</p>
+          <p className="like-count">{item.likes}</p>
         </Button>,
         
         <IconText
           icon={MessageOutlined}
-          text={item.comments.length}
+          text={item.comments}
           key="list-vertical-message"
         />,
       ]}
@@ -48,7 +48,7 @@ const BlogItem = ({ item }) => {
       <List.Item.Meta
         avatar={<Avatar src={item.author.image} />}
         title={<Link to={`/blog/${item._id}`}>{item.title}</Link>}
-        description={item.author.lastName+' '+item.author.firstName}
+        description={item.author.fullName}
       />
       {/* {item.body.substring(0, 200)}... */}
       {blogContent}

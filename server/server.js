@@ -1,21 +1,21 @@
-import express from 'express'
-import path from 'path'
-import mongoose from 'mongoose'
-import cors from 'cors'
-import helmet from 'helmet'
-import xss from 'xss-clean'
-import mongoSantize from 'express-mongo-sanitize'
-import authRouter from './routes/auth.js'
-import blogRouter from './routes/blog.js'
-import dotenv from 'dotenv'
-import rateLimit from 'express-rate-limit'
-import errorMiddleware from './routes/middleware/errorMiddleware.js'
-import http from 'http'
-import https from 'https'
-import fs from 'fs'
-import cookieParser from 'cookie-parser'
-
-import Stripe from 'stripe'
+const express= require('express') 
+const path  =require('path') 
+const mongoose  =require( 'mongoose')
+const cors  =require('cors') 
+const helmet  =require('helmet') 
+const xss  =require('xss-clean') 
+const mongoSantize  =require('express-mongo-sanitize') 
+const authRouter  =require('./routes/auth.js') 
+const blogRouter  =require('./routes/blog.js') 
+const dotenv  =require('dotenv') 
+const rateLimit  =require('express-rate-limit') 
+const errorMiddleware  =require('./routes/middleware/errorMiddleware.js') 
+const http  =require('http') 
+const https  =require( 'https')
+const fs  =require('fs') 
+const cookieParser  =require('cookie-parser') 
+const passport  =require('passport') 
+const Stripe  =require('stripe') 
 
 
 dotenv.config()
@@ -50,6 +50,12 @@ app.use(helmet())
 //for NoSql injections and XSS(Cros site scripting) attacks
 app.use(mongoSantize())
 // app.use(xss())
+
+app.use(passport.initialize())
+
+require('./utils/passport.js')
+
+
 
 app.use('/public',express.static(path.resolve('public')))
 

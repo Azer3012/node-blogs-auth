@@ -1,58 +1,48 @@
-import User from "../models/user.js";
-import jwt from "jsonwebtoken";
-import crypto from "crypto";
-import PasswordResetModel from "../models/passwordResets.js";
-import nodemailer from "nodemailer";
-
-import cloudinary from "cloudinary";
+const User =require("../models/user.js") ;
+const jwt =require("jsonwebtoken") ;
+const crypto =require("crypto") ;
+const PasswordResetModel =require("../models/passwordResets.js") ;
+const nodemailer =require("nodemailer") ;
+const passport =require("passport") ;
+const cloudinary =require("cloudinary") ;
 
 const SALT = "aue";
-
-
-
-
 
 //reguster
 const register = async (req, res, next) => {
   const { firstName, lastName, email, password } = req.body;
 
+  cloudinary.v2.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+  });
 
-
-cloudinary.v2.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-});
-
-  
-  if (firstName && lastName && email && password ) {
+  if (firstName && lastName && email && password) {
     try {
       console.log(email);
       // const existingEmail = await User.find({ email });
 
       // console.log({existingEmail});
 
-
       // if (existingEmail) {
       //   res.status(400).send({
       //     message: "User with this email already exist!",
       //   });
-      // } 
+      // }
 
-      let result=null;
-      
-      if(req?.file?.path){
-         result = await cloudinary.v2.uploader.upload(req.file.path);
+      let result = null;
 
+      if (req?.file?.path) {
+        result = await cloudinary.v2.uploader.upload(req.file.path);
       }
-
 
       const newUser = new User({
         firstName,
         lastName,
         email,
         password,
-        image: result?result.secure_url:undefined,
+        image: result ? result.secure_url : undefined,
       });
       await newUser.save();
       res.status(200).send("ok");
@@ -64,49 +54,37 @@ cloudinary.v2.config({
 };
 
 //login
-const login = async (req, res, next) => {
+const login = async (req, res) => {
   const { email, password } = req.body;
 
-  const hashedPassword = crypto
-    .pbkdf2Sync(password, SALT, 100000, 64, 'sha512')
-    .toString('hex');
+  console.log('here');
+  passport.authenticate('local', { session: false }, (error, user) => {
+    if (error) {
+      return res.status(400).json({ error });
+    }
 
-  const user = await User.findOne({
-    email,
-    password: hashedPassword,
-  })
-    .select('_id firstName lastName email image')
-    .exec();
+    req.login(user, { session: false }, (error) => {
+      const accessToken = jwt.sign(user, process.env.JWT_SECRET_KEY, {
+        expiresIn: '24h',
+      });
 
-   
+      res.cookie('app-access-token', accessToken, {
+        maxAge: 60 * 60 * 24 * 1000,
+        httpOnly: true,
+      });
 
-  if (user) {
-    const accessToken = jwt.sign(user.toObject(), process.env.JWT_SECRET_KEY, {
-      expiresIn: '12h',
+      res.status(200).send();
     });
-
-    res.cookie('app-access-token', accessToken, {
-      maxAge: 60 * 60 * 12 * 1000, // 12h
-      httpOnly: true,
-    });
-
-    res.status(200).send();
-  } else {
-    res.status(401).send({
-      message: 'Username or password is not correct!',
-    });
-  }
-
+  })(req, res);
 };
 
 //user info
 
-const getUserInfo=(req,res)=>{
-  console.log('aloo');
+const getUserInfo = (req, res) => {
+  console.log("aloo");
   console.log(req.user);
-  res.status(200).send(req.user)
-}
-
+  res.status(200).send(req.user);
+};
 
 //password reset
 const resetPassword = async (req, res, next) => {
@@ -150,13 +128,13 @@ const passwordResetRequest = async (req, res, next) => {
     try {
       const user = await User.findOne({ email });
 
-      if(!user){
+      if (!user) {
         res.status(400).send({
-            message:"No user found with this email"
-        })
+          message: "No user found with this email",
+        });
       }
 
-      const resetToken=crypto.randomBytes(32).toString("base64")
+      const resetToken = crypto.randomBytes(32).toString("base64");
       const passwordReset = new PasswordResetModel({
         user: user._id,
         resetToken,
@@ -173,14 +151,14 @@ const passwordResetRequest = async (req, res, next) => {
         },
       });
 
-      const linkToPasswordResetPage="http://localhost:3000/password-mail"+resetToken;
-      await transporter.sendMail(
-        {
-            from:"Blogs Api <noreply@blogs.info>",
-            to:email,
-            subject:"Password Reset",
-            text:'',
-            html:`
+      const linkToPasswordResetPage =
+        "http://localhost:3000/password-mail" + resetToken;
+      await transporter.sendMail({
+        from: "Blogs Api <noreply@blogs.info>",
+        to: email,
+        subject: "Password Reset",
+        text: "",
+        html: `
             <h1>Reset Pasword</h1>
             <p>
 
@@ -188,28 +166,31 @@ const passwordResetRequest = async (req, res, next) => {
             
             </p>
 
-            `
-
-        }
-      )
+            `,
+      });
       res.send("email sent to your email");
     } catch (error) {
       next(error);
     }
   }
-
-  
 };
 
 //logout
 
-const logout=async(req,res)=>{
+const logout = async (req, res) => {
   try {
-    await res.clearCookie('app-access-token',{path:'/'})
-    res.status(200).send()
+    await res.clearCookie("app-access-token", { path: "/" });
+    res.status(200).send();
   } catch (error) {
     console.log(error);
   }
-}
+};
 
-export { register, login, resetPassword, passwordResetRequest,getUserInfo,logout };
+module.exports= {
+  register,
+  login,
+  resetPassword,
+  passwordResetRequest,
+  getUserInfo,
+  logout,
+};

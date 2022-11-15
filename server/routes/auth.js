@@ -1,11 +1,11 @@
-import express from "express";
+const express = require( "express");
 
-import multer from "multer";
+const multer = require("multer")
 
 
 
-import { getUserInfo, login, logout, passwordResetRequest, register, resetPassword } from "../controllers/authController.js";
-import { authMiddleware } from "./middleware/authMiddleware.js";
+const { getUserInfo, login, logout, passwordResetRequest, register, resetPassword } = require("../controllers/authController.js") ;
+const { authMiddleware } = require("./middleware/authMiddleware.js");
 
 
 const router = express.Router();
@@ -55,4 +55,4 @@ router.post('/logout',authMiddleware,logout)
 
 
 
-export default router;
+module.exports= router;

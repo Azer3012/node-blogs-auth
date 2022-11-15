@@ -1,6 +1,6 @@
-import express from "express";
-import { addCommentToBlog, createNewBlog, deleteBlog, getBlogs, getMyBlogs, likeBlog, selectedBlog, updateBlog } from "../controllers/blogController.js";
-import { authMiddleware } from "./middleware/authMiddleware.js";
+const express =require("express") 
+const { addCommentToBlog, createNewBlog, deleteBlog, getBlogs, getMyBlogs, likeBlog, selectedBlog, updateBlog } =require("../controllers/blogController.js") ;
+const { authMiddleware } =require("./middleware/authMiddleware.js") 
 
 
 
@@ -31,4 +31,4 @@ router.post("/blogs/:id/comments",addCommentToBlog)
 //delete blog
 router.delete("/blogs/:id", deleteBlog);
 
-export default router;
+module.exports= router;

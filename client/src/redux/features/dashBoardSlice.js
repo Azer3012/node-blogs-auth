@@ -28,12 +28,13 @@ const dashboardSlice=createSlice({
         toggleLikeDashboard:(state,action)=>{
             const {userId,blogId}=action.payload;
             const blog=state.list.find(blog=>blog._id===blogId)
-            if(blog.likes.includes(userId)){
+            if(blog?.likes?.includes(userId)){
                 blog.likes=blog.likes.filter(likeId=>likeId!==userId)
+                blog.likesCount--;
             }
             else{
                 blog.likes.push(userId)
-                
+                blog.likesCount++
             }
           
         },

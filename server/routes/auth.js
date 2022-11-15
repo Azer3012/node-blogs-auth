@@ -1,12 +1,17 @@
-const express = require( "express");
+const express = require("express");
 
-const multer = require("multer")
+const multer = require("multer");
 
-
-
-const { getUserInfo, login, logout, passwordResetRequest, register, resetPassword } = require("../controllers/authController.js") ;
+const {
+  getUserInfo,
+  login,
+  logout,
+  passwordResetRequest,
+  register,
+  resetPassword,
+} = require("../controllers/authController.js");
 const { authMiddleware } = require("./middleware/authMiddleware.js");
-
+const passport = require("passport");
 
 const router = express.Router();
 
@@ -29,30 +34,55 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage, fileFilter });
 
-
-
-
-
 //register
-router.post("/register", upload.single("image"),register);
+router.post("/register", upload.single("image"), register);
 
 //login
-router.post("/login",login );
+router.post("/login", login);
 
 //user info
-router.get('/getUser',authMiddleware,getUserInfo)
+router.get(
+  "/getUser",
+  passport.authenticate("jwt", { session: false }),
+  getUserInfo
+);
 
 //password reset
-router.patch('/password',resetPassword)
+router.patch("/password", resetPassword);
 
 //password reset request with email
-router.post('/password/reset-request',passwordResetRequest)
+router.post("/password/reset-request", passwordResetRequest);
 
 //logout
 
-router.post('/logout',authMiddleware,logout)
+router.post(
+  "/logout",
+  passport.authenticate("jwt", { session: false }),
+  logout
+);
+
+//login with google
+
+router.get(
+  '/login/google',
+  passport.authenticate('google', { scope: ['profile', 'email'] })
+);
+
+router.get(
+  '/google/callback',
+  passport.authenticate('google', {
+    failureRedirect: process.env.CLIENT_URL + '/auth/login',
+    session: false,
+  }),
+  (req, res) => {
+    const accessToken = req.user.generateJWT();
+    res.cookie('app-access-token', accessToken, {
+      maxAge: 60 * 60 * 12 * 1000,
+      httpOnly: true,
+    });
+    res.redirect(process.env.CLIENT_URL + '/dashboard');
+  }
+);
 
 
-
-
-module.exports= router;
+module.exports = router;

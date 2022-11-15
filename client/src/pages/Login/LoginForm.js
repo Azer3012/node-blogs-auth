@@ -1,8 +1,9 @@
 import { Button, Form, Input,message } from "antd";
 import { GoogleOutlined } from "@ant-design/icons";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import instance from "../../lib/axios";
+
 
 const LoginForm = () => {
 
@@ -21,7 +22,7 @@ const LoginForm = () => {
       navigate('/')
     } catch (error) {
       setLoader(false)
-      const errorMessage=error.response.data.message;
+      const errorMessage=error.response.data.error;
       message.error(errorMessage)
       
     }
@@ -30,6 +31,10 @@ const LoginForm = () => {
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
+
+  const handleLoginWithGoogle=()=>{
+    window.open('http://localhost:8000/api/v1/login/google','_self')
+  }
   return (
     <Form
       name="basic"
@@ -53,13 +58,15 @@ const LoginForm = () => {
       >
         <Input.Password />
       </Form.Item>
+      
+      <Link to="/auth/forgot-password">Forgot password</Link>
       <Form.Item >
         <Button disabled={loader} loading={loader}  block type="primary" htmlType="submit">
           Login
         </Button>
       </Form.Item>
       <Form.Item >
-        <Button  icon={<GoogleOutlined  />}  block  htmlType="submit">
+        <Button onClick={handleLoginWithGoogle}  icon={<GoogleOutlined  />}  block  htmlType="submit">
           Sign In With Google
         </Button>
       </Form.Item>

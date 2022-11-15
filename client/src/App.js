@@ -8,12 +8,16 @@ import Dashboard from './pages/Dasboard';
 import MyLayout from './Layout';
 import Chat from './pages/Chat';
 import CreateBlog from './pages/CreateBlog';
+import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
 function App() {
   return (
     <Routes>
       <Route index element={<Navigate to="/dashboard"/>} />
       <Route path='/auth/login' element={<Login/>} />
       <Route path='/auth/registration' element={<Registration/>} />
+      <Route path='/auth/forgot-password' element={<ForgotPassword/>} />
+      <Route path='/auth/reset/:resetToken' element={<ResetPassword/>} />
       <Route path='/' element={<MyLayout/>}>
         <Route path='dashboard' element={<Dashboard/>} />
         <Route path='blogs'element={<Blogs/>} /> 

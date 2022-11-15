@@ -57,7 +57,7 @@ const register = async (req, res, next) => {
 const login = async (req, res) => {
   const { email, password } = req.body;
 
-  console.log('here');
+ 
   passport.authenticate('local', { session: false }, (error, user) => {
     if (error) {
       return res.status(400).json({ error });
@@ -81,8 +81,7 @@ const login = async (req, res) => {
 //user info
 
 const getUserInfo = (req, res) => {
-  console.log("aloo");
-  console.log(req.user);
+  
   res.status(200).send(req.user);
 };
 
@@ -111,7 +110,7 @@ const resetPassword = async (req, res, next) => {
           message: "Your password has been reset",
         });
       } else {
-        res.send({
+        res.status(400).send({
           message: "This password reset request does not exist or expired",
         });
       }
@@ -140,7 +139,7 @@ const passwordResetRequest = async (req, res, next) => {
         resetToken,
       });
 
-      //Todo send email to this user
+      
       await passwordReset.save();
       const transporter = nodemailer.createTransport({
         host: process.env.EMAIL_HOST,
@@ -152,7 +151,7 @@ const passwordResetRequest = async (req, res, next) => {
       });
 
       const linkToPasswordResetPage =
-        "http://localhost:3000/password-mail" + resetToken;
+        "http://localhost:3000/auth/reset/" + resetToken;
       await transporter.sendMail({
         from: "Blogs Api <noreply@blogs.info>",
         to: email,
@@ -168,7 +167,7 @@ const passwordResetRequest = async (req, res, next) => {
 
             `,
       });
-      res.send("email sent to your email");
+      res.send("Email has been sent to you to reset your password!");
     } catch (error) {
       next(error);
     }

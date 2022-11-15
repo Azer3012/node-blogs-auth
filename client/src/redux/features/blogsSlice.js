@@ -29,6 +29,7 @@ const blogsSlice=createSlice({
             const blog=state.list.find(blog=>blog._id===blogId)
             if(blog.likes.includes(userId)){
                 blog.likes=blog.likes.filter(likeId=>likeId!==userId)
+                
             }
             else{
                 blog.likes.push(userId)

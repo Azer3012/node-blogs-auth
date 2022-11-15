@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 
 const BlogSchema = new mongoose.Schema(
   {
@@ -8,20 +8,22 @@ const BlogSchema = new mongoose.Schema(
       ref: "users",
     },
     body: String,
-    comments:[{
-      type:"ObjectId",
-      ref:"comments"
-    }],
+    comments: [
+      {
+        type: "ObjectId",
+        ref: "comments",
+      },
+    ],
     likes: [
       {
-        type:"ObjectId",
-        ref:"users"
-      }
+        type: "ObjectId",
+        ref: "users",
+      },
     ],
-    tags:{
-        type:[String],
-        default:()=>[]
-    }
+    tags: {
+      type: [String],
+      default: () => [],
+    },
   },
   {
     timestamps: true,
@@ -29,4 +31,4 @@ const BlogSchema = new mongoose.Schema(
 );
 
 const BlogModel = mongoose.model("blogs", BlogSchema);
-export default BlogModel;
+module.exports = BlogModel;

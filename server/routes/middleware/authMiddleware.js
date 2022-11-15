@@ -1,4 +1,4 @@
-import jwt from "jsonwebtoken";
+const jwt =require( "jsonwebtoken");
 
 const authMiddleware = async (req, res, next) => {
     const token = req.cookies['app-access-token'];
@@ -30,4 +30,4 @@ const authMiddleware = async (req, res, next) => {
   
 };
 
-export  {authMiddleware};
+module.exports=  {authMiddleware};

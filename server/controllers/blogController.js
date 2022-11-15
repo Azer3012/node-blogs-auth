@@ -1,5 +1,5 @@
-import Blog from "../models/blog.js";
-import Comment from "../models/comments.js";
+const Blog =require("../models/blog.js") ;
+const Comment =require( "../models/comments.js");
 
 const getMyBlogs = async (req, res, next) => {
   const userId = req.user._id;
@@ -170,7 +170,7 @@ const addCommentToBlog = async (req, res) => {
   }
 };
 
-export {
+module.exports= {
   getMyBlogs,
   selectedBlog,
   createNewBlog,

@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 
 const CommentSchema = new mongoose.Schema(
   {
@@ -13,9 +13,9 @@ const CommentSchema = new mongoose.Schema(
   }
 );
 
-CommentSchema.pre(/find.*/,function(){
-  this.populate("author","-password")
-})
+CommentSchema.pre(/find.*/, function () {
+  this.populate("author", "-password");
+});
 
 const CommentModel = mongoose.model("comments", CommentSchema);
-export default CommentModel;
+module.exports = CommentModel;

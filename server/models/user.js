@@ -1,5 +1,5 @@
-import mongoose from "mongoose";
-import crypto from "crypto";
+const mongoose =require("mongoose") ;
+const crypto =require("crypto");
 
 const UserSchema = mongoose.Schema(
   {
@@ -31,4 +31,4 @@ UserSchema.pre("save", function (next) {
 
 const UserModel = mongoose.model("users", UserSchema);
 
-export default UserModel;
+module.exports= UserModel;

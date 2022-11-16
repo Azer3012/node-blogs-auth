@@ -8,8 +8,18 @@ import CustomButton from '../../components/CustomButton';
 import { useNavigation } from '@react-navigation/native';
 
 const Login = () => {
-  const [value, setValue] = useState('');
+ 
+  const [email,setEmail]=useState('abishovazar@gmail.com')
+  const [password,setPassword]=useState('azer1234')
   const navigation=useNavigation()
+  const login=async()=>{
+    try {
+        const response=await helpers.api().get('/login',{email,password})
+        console.log(response);
+    } catch (error) {
+        console.log(error);
+    }
+  }
   return (
     <Layout type={'general'} headerText={'Login'} hasBackButton={false}>
       <View style={styles.container}>
@@ -17,7 +27,8 @@ const Login = () => {
           <CustomInput
             placeholder="email"
             label={'Email'}
-            {...{value, setValue}}
+            value={email}
+            setValue={setEmail}
           />
         </View>
         <View style={styles.inputContainer}>
@@ -25,7 +36,8 @@ const Login = () => {
             placeholder="password"
             label={'Password'}
             isPassword={true}
-            {...{value, setValue}}
+            value={password}
+            setValue={setPassword}
           />
         </View>
         <TouchableOpacity onPress={()=>{navigation.navigate('forgotPassword')}} style={styles.forgotBtn}>
@@ -33,7 +45,7 @@ const Login = () => {
         </TouchableOpacity>
 
         <View style={styles.btnContainer}>
-         <CustomButton text={"Login"} />
+         <CustomButton onPress={login} text={"Login"} />
         </View>
         <View style={styles.btnContainer}>
          <CustomButton text={"Login with google"} google={true} />

@@ -11,8 +11,8 @@ const Stack=createNativeStackNavigator()
 const Stacks = () => {
   return (
     <Stack.Navigator screenOptions={helpers.screenOptions}>
-        <Stack.Screen name='MainTab' component={MainTab}/>
         <Stack.Screen name='login' component={Login}/>
+        <Stack.Screen name='MainTab' component={MainTab}/>
         <Stack.Screen name='registration' component={Registration}/>
         <Stack.Screen name='forgotPassword' component={ForgotPassword}/>
         <Stack.Screen name='resetPassword' component={ResetPassword}/>

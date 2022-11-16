@@ -40,9 +40,27 @@ app.use(cookieParser())
 app.use(express.urlencoded())
 
 app.use(cors({
-    origin:process.env.CLIENT_URL,
+    // origin:process.env.CLIENT_URL,
+    origin:process.env.MOBILE_URL,
     credentials:true
 }))
+
+console.log(process.env.MOBILE_URL);
+
+// app.use((req, res, next) => {
+//     const allowedOrigins = [process.env.CLIENT_URL,process.env.MOBILE_URL];
+//     const origin = req.headers.origin;
+//     console.log(origin);
+//     if (allowedOrigins.includes(origin)) {
+//          res.setHeader('Access-Control-Allow-Origin', origin);
+//          console.log(origin);
+//     }
+//     //res.header('Access-Control-Allow-Origin', 'http://127.0.0.1:8020');
+//     res.header('Access-Control-Allow-Methods', 'GET, OPTIONS');
+//     res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+//     res.header('Access-Control-Allow-Credentials', true);
+//     return next();
+//   });
 //for security
 app.use(helmet())
 

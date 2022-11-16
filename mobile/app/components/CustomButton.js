@@ -6,10 +6,11 @@ import GoogleIcon from 'react-native-vector-icons/AntDesign'
 
 const CustomButton = ({
     text,
-    google=false
+    google=false,
+    onPress
 }) => {
   return (
-    <TouchableOpacity style={[styles.button,google&&{backgroundColor:colors.googleBtn}]}>
+    <TouchableOpacity onPress={onPress} style={[styles.button,google&&{backgroundColor:colors.googleBtn}]}>
         {google && <GoogleIcon style={styles.icon} name='google' color={colors.white}/> }
       <Text style={styles.text}>{text}</Text>
       

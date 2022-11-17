@@ -5,5 +5,6 @@ export default {
     inputBorder:"#d9d9d9",
     borderFocus:"#40a9ff",
     buttonBakground:'#1890FF',
-    googleBtn:"#DC4E41"
+    googleBtn:"#DC4E41",
+    tagBg:"#FAFAFA"
 }

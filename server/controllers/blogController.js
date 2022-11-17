@@ -56,7 +56,8 @@ const getBlogs = async (req, res) => {
         body: 1,
         tags: 1,
         likes:1,
-        comments: { $size: "$comments" },
+        comments:1,
+        commentCount: { $size: "$comments" },
         likesCount: { $size: "$likes" },
         isILiked: {
           $in: [userId, "$likes"],

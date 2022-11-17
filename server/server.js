@@ -41,11 +41,12 @@ app.use(express.urlencoded())
 
 app.use(cors({
     // origin:process.env.CLIENT_URL,
+
     origin:process.env.MOBILE_URL,
     credentials:true
 }))
 
-console.log(process.env.MOBILE_URL);
+// console.log(process.env.MOBILE_URL);
 
 // app.use((req, res, next) => {
 //     const allowedOrigins = [process.env.CLIENT_URL,process.env.MOBILE_URL];

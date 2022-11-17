@@ -1,9 +1,11 @@
 import {Animated, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React, {useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import colors from './values/colors';
 import helpers from './helpers/helpers';
-import Entypo from 'react-native-vector-icons/Entypo'
+import Entypo from 'react-native-vector-icons/Entypo';
+import {useDispatch, useSelector} from 'react-redux';
+import { setUser } from './redux/features/userSlice';
 
 const Layout = ({
   headerText,
@@ -23,6 +25,9 @@ const Layout = ({
   isService = false,
   customHeaderTextStyle,
 }) => {
+  const [fetching, setFetching] = useState(false);
+  const dispatch = useDispatch();
+  const {loading} = useSelector(state => state.user);
   const navigation = useNavigation();
   const colorAnim = useRef(new Animated.Value(0)).current;
   let layout = {
@@ -56,6 +61,23 @@ const Layout = ({
       </>
     ),
   };
+
+  const getUser = async () => {
+    setFetching(true)
+    try {
+      const response=await helpers.api().get('/getUser')
+      console.log({response});
+      dispatch(setUser(response.data))
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setFetching(false)
+    }
+  };
+
+  useEffect(()=>{
+    getUser()
+  },[])
   return (
     <>
       <Animated.View style={[styles.animatedHeader]} />

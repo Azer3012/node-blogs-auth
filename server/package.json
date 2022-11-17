@@ -28,6 +28,7 @@
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
     "stripe": "^10.16.0",
-    "xss-clean": "^0.1.1"
+    "xss-clean": "^0.1.1",
+    "yup": "^0.32.11"
   }
 }

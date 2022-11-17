@@ -1,14 +1,28 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import { Chat, Dashboard, MyBlogs, Profile } from '../screens'
+import { BlogDetail, Chat, Dashboard, MyBlogs, Profile } from '../screens'
 import helpers from '../helpers/helpers'
 import { isIphoneX } from 'react-native-iphone-x-helper'
 import AnimatedTabButton from '../components/AnimatedTabButton'
 import colors from '../values/colors'
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
 const Tab=createBottomTabNavigator()
+const Stack=createNativeStackNavigator()
+
+const DashboardStack=()=>{
+  return (
+    <Stack.Navigator screenOptions={helpers.screenOptions}>
+      <Stack.Screen name="dashboard" component={Dashboard}/>
+      <Stack.Screen name="blogDetail" component={BlogDetail}/>
+    </Stack.Navigator>
+  )
+}
 const Tabs = () => {
+
+
+  
   return (
     <Tab.Navigator
     
@@ -23,9 +37,9 @@ const Tabs = () => {
         tabBarShowLabel: false,
       }}
       backBehavior="initialRoute"
-      initialRouteName={'dashboard'}
+      initialRouteName={'dashboardTab'}
     >
-        <Tab.Screen name="dashboard" component={Dashboard}
+        <Tab.Screen name="dashboardTab" component={DashboardStack}
         options={() => ({
             tabBarButton: props => {
              return ( <AnimatedTabButton

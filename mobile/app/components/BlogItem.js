@@ -2,12 +2,16 @@ import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
 import LikeIcon from 'react-native-vector-icons/AntDesign';
 import CommentIcon from 'react-native-vector-icons/EvilIcons';
-import helpers from '../../../helpers/helpers';
-import colors from '../../../values/colors';
-import useLike from '../../../hooks/useLike';
+import helpers from '../helpers/helpers';
+import colors from '../values/colors';
+import useLike from '../hooks/useLike';
+import { useRoute } from '@react-navigation/native';
 const BlogItem = ({item}) => {
-  const [isIlikedBlog, handleLike] = useLike(item);
+  const route=useRoute()
+  const [isIlikedBlog, handleLike] = useLike(item,route.name);
   const blogContent = item?.body.replace(/<[^>]+>/g, '');
+
+ 
 
   return (
     <View style={styles.blogCard}>

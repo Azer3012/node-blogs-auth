@@ -1,8 +1,8 @@
 import { StyleSheet, Text, TextInput, View } from 'react-native'
 import React, { useState } from 'react'
 import SearchIcon from 'react-native-vector-icons/FontAwesome'
-import helpers from '../../../helpers/helpers'
-import colors from '../../../values/colors'
+import helpers from '../helpers/helpers'
+import colors from '../values/colors'
 
 const SearchInput = ({
     value,

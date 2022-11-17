@@ -11,10 +11,32 @@ const getMyBlogs = async (req, res, next) => {
   const titleFilter = { $regex: ".*" + filter + ".*", $options: "i" };
   try {
     const blogs = await Blog.find({ title: titleFilter })
-      .select("_id title body likes tags comments createdAt")
+      .select(
+        {
+          author: 1,
+          title: 1,
+          body: 1,
+          tags: 1,
+          likes:1,
+          comments:1,
+          commentCount: { $size: "$comments" },
+          likesCount: { $size: "$likes" },
+          isILiked: {
+            $in: [userId, "$likes"],
+          },
+        }
+      )
       .where("author")
       .equals(userId)
-      .populate("author", "_id firstName lastName image")
+      .populate(
+        "author",{
+          _id:1,
+          image:1,
+          fullName:{
+            $concat:["$firstName"," ","$lastName"]
+          }
+        }
+      )
       .sort({ createdAt: "desc" })
       .skip(offset)
       .limit(limit)

@@ -1,14 +1,18 @@
+import { useRoute } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
 import helpers from "../helpers/helpers";
+import { toggleLikeMyBlog } from "../redux/features/blogSlice";
 import { toggleLikeDashboard } from "../redux/features/dashboardSlice";
 
 
-const useLike=(blog)=>{
-
+const useLike=(blog,routeName)=>{
+  const route=useRoute()
+  console.log(route.name);
    
     const user= useSelector((state) => state.user.currentUser);
   
-    
+    const likeActions=routeName=="dashboard"?toggleLikeDashboard:toggleLikeMyBlog
+   
   
     const dispath=useDispatch()
     const isIlikedBlog=blog?.likes?.includes(user._id)
@@ -17,7 +21,7 @@ const useLike=(blog)=>{
     const handleLike=async(id)=>{
       try {
         
-          dispath(toggleLikeDashboard({blogId:id,userId:user._id}))
+          dispath(likeActions({blogId:id,userId:user._id}))
         await helpers.api().put(`/blogs/${id}/like`)
         
       } catch (error) {

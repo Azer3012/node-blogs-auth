@@ -10,13 +10,14 @@ import React, {useEffect, useState} from 'react';
 import helpers from '../../helpers/helpers';
 import Layout from '../../Layout';
 import colors from '../../values/colors';
-import SearchInput from './_components/SearchInput';
+import SearchInput from '../../components/SearchInput';
 import CreateIcon from 'react-native-vector-icons/AntDesign';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import {setBlogList} from '../../redux/features/dashboardSlice';
+import BlogItem from '../../components/BlogItem';
 
-import BlogItem from './_components/BlogItem';
+
 const Dashboard = () => {
   const [filter, setFilter] = useState('');
   const navigation = useNavigation();

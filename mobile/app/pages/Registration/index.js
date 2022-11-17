@@ -143,7 +143,7 @@ const Registration = () => {
         <View style={styles.btnContainer}>
          <CustomButton text={"Login with google"} google={true} />
         </View>
-        <TouchableOpacity style={styles.forgotBtn}>
+        <TouchableOpacity onPress={()=>navigation.navigate('login')} style={styles.forgotBtn}>
             <Text style={styles.forgotText}>Login</Text>
         </TouchableOpacity>
         

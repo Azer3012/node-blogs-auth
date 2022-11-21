@@ -19,16 +19,14 @@ import {setBlogList} from '../../redux/features/dashboardSlice';
 import BlogItem from '../../components/BlogItem';
 
 import SearchInput from '../../components/SearchInput';
-import { setMyBlogList } from '../../redux/features/blogSlice';
+import {setMyBlogList} from '../../redux/features/blogSlice';
 const MyBlogs = () => {
-  
   const [filter, setFilter] = useState('');
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const {list, error, loading} = useSelector(state => state.myBlogs);
 
   const getBlogList = async () => {
-    
     try {
       const response = await helpers.api().get('/blogs/my', {filter});
       console.log({response});
@@ -99,7 +97,7 @@ const styles = StyleSheet.create({
     ...helpers.fontStyle('Regular', 14),
     marginLeft: helpers.px(5),
   },
-  flatList:{
-    marginTop:helpers.px(16)
-  }
+  flatList: {
+    marginTop: helpers.px(16),
+  },
 });

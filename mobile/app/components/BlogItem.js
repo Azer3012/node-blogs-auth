@@ -5,16 +5,20 @@ import CommentIcon from 'react-native-vector-icons/EvilIcons';
 import helpers from '../helpers/helpers';
 import colors from '../values/colors';
 import useLike from '../hooks/useLike';
-import { useRoute } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 const BlogItem = ({item}) => {
   const route=useRoute()
   const [isIlikedBlog, handleLike] = useLike(item,route.name);
-  const blogContent = item?.body.replace(/<[^>]+>/g, '');
+  const blogContent = item?.body?.replace(/<[^>]+>/g, '');
+
+  const navigation=useNavigation()
 
  
 
   return (
-    <View style={styles.blogCard}>
+    <TouchableOpacity onPress={()=>navigation.navigate('blogDetail',{
+      id:item._id
+    })} style={styles.blogCard}>
       <View style={styles.headerBlog}>
         <Image style={styles.authorImage} source={{uri: item.author.image}} />
         <View style={styles.titleAndAuthor}>
@@ -23,7 +27,7 @@ const BlogItem = ({item}) => {
         </View>
       </View>
       <View style={styles.body}>
-        <Text style={styles.bodyText}>{blogContent.substring(0, 200)}...</Text>
+        <Text style={styles.bodyText}>{blogContent?.substring(0, 200)}...</Text>
       </View>
       <View style={styles.tags}>
         {item.tags.map((tag, index) => (
@@ -48,7 +52,7 @@ const BlogItem = ({item}) => {
           <Text style={styles.likeText}>{item?.commentCount}</Text>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
@@ -60,6 +64,7 @@ const styles = StyleSheet.create({
     borderRadius: helpers.px(8),
     borderColor: colors.inputBorder,
     padding: helpers.px(8),
+    marginBottom:helpers.px(16)
   },
   headerBlog: {
     flexDirection: 'row',

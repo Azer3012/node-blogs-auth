@@ -10,6 +10,8 @@ const BlogItem = ({ item }) => {
 
   const [isIlikedBlog, handleLike] = useLike(item);
 
+  console.log(item);
+
   const IconText = ({ icon, text }) => (
     <div className="like-comments">
       <Space>
@@ -35,13 +37,13 @@ const BlogItem = ({ item }) => {
 
           <IconText
             icon={MessageOutlined}
-            text={item.comments}
+            text={item.commentCount}
             key="list-vertical-message"
           />,
         ]}
       >
         <List.Item.Meta
-          avatar={<Avatar src={item.author.image} />}
+          avatar={<Avatar src={item?.author?.image} />}
           title={<Link to={`/blog/${item._id}`}>{item.title}</Link>}
           description={item.author.fullName}
         />

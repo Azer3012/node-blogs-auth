@@ -37,7 +37,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     getBlogList();
-  }, [filter]);
+  }, []);
 
   return (
     <Layout type={'general'} headerText="Dashboard" hasBackButton={false}>

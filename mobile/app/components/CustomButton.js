@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import helpers from '../helpers/helpers'
 import colors from '../values/colors'
@@ -7,12 +7,13 @@ import GoogleIcon from 'react-native-vector-icons/AntDesign'
 const CustomButton = ({
     text,
     google=false,
-    onPress
+    onPress,
+    loading
 }) => {
   return (
-    <TouchableOpacity onPress={onPress} style={[styles.button,google&&{backgroundColor:colors.googleBtn}]}>
+    <TouchableOpacity disabled={loading} onPress={onPress} style={[styles.button,google&&{backgroundColor:colors.googleBtn}]}>
         {google && <GoogleIcon style={styles.icon} name='google' color={colors.white}/> }
-      <Text style={styles.text}>{text}</Text>
+      {loading?<ActivityIndicator size={'small'}/>:<Text style={styles.text}>{text}</Text>}
       
     </TouchableOpacity>
   )

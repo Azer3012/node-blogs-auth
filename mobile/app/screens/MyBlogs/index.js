@@ -39,7 +39,7 @@ const MyBlogs = () => {
 
   useEffect(() => {
     getBlogList();
-  }, [filter]);
+  }, []);
 
   return (
     <Layout type={'general'} headerText="My Blogs" hasBackButton={false}>
@@ -49,7 +49,7 @@ const MyBlogs = () => {
             <SearchInput value={filter} setValue={setFilter} />
           </View>
           <View style={styles.createContainer}>
-            <TouchableOpacity style={styles.createBtn}>
+            <TouchableOpacity onPress={()=>navigation.navigate('createBlog')} style={styles.createBtn}>
               <CreateIcon name="pluscircle" size={16} color={colors.main} />
               <Text style={styles.createText}>Create Blog</Text>
             </TouchableOpacity>

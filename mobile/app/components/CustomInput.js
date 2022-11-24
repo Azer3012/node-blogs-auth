@@ -16,17 +16,20 @@ const CustomInput = ({
   isPassword = false,
   label,
   placeholder = 'email',
+  textarea=false
 }) => {
   const [hide, setHide] = useState(true);
 
   return (
     <>
       {label && <Text style={styles.label}>{label}</Text>}
-      <View style={styles.container}>
+      <View style={[styles.container,textarea && {minHeight:helpers.px(80),alignItems:'flex-start'}]}>
         <TextInput
           secureTextEntry={isPassword && hide}
+          multiline={textarea}
           style={styles.input}
           placeholder={placeholder}
+          onChangeText={setValue}
         />
        { isPassword &&<TouchableOpacity style={styles.eye} onPress={()=>setHide(!hide)}>
           <EyeIcon name={hide?'eye-off':'eye'} size={16} />
@@ -45,7 +48,7 @@ const styles = StyleSheet.create({
   },
   container: {
     borderWidth: 1,
-    height: helpers.px(30),
+    minHeight: helpers.px(30),
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent:'space-between',

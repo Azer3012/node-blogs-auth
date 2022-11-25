@@ -47,7 +47,7 @@ const BlogDetail = () => {
       {loading ? (
         <ActivityIndicator size={'large'} />
       ) : (
-        <ScrollView style={styles.container}>
+        <ScrollView contentContainerStyle={{paddingBottom:70}} showsVerticalScrollIndicator={false} style={styles.container}>
           <View style={styles.header}>
             <View style={styles.titleAndAuthor}>
               <Text style={styles.title}>{detail.title}</Text>
@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: helpers.px(16),
     paddingTop: helpers.px(16),
-    paddingBottom:helpers.px(80)
+    
   },
   header: {
     flexDirection: 'row',

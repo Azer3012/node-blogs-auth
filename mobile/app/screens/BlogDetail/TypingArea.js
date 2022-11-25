@@ -5,6 +5,7 @@ import CustomButton from '../../components/CustomButton';
 import helpers from '../../helpers/helpers';
 import colors from '../../values/colors';
 
+
 const TypingArea = ({id,update}) => {
   const {image} = useSelector(state => state.user.currentUser);
   const [comment, setComment] = useState(null);
@@ -34,6 +35,7 @@ const TypingArea = ({id,update}) => {
         <TextInput value={comment} onChangeText={setComment} multiline style={styles.input} />
       </View>
       <CustomButton loading={loading} onPress={submit} text={'Add comment'} />
+      
     </View>
   );
 };

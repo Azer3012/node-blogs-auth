@@ -80,7 +80,7 @@ class Helpers {
 api(headers={}){
   return axios.create({
     baseURL:"http://192.168.100.35:8000/api/v1",
-    timeout:7500,
+    // timeout:7500,
     withCredentials:true,
     headers:{
       Accept:"application/json",

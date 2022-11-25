@@ -85,6 +85,42 @@ const getUserInfo = (req, res) => {
   res.status(200).send(req.user);
 };
 
+//edit
+const editProfile=async(req,res)=>{
+
+  console.log(req.body);
+
+}
+
+//ChnagePhoto
+const changePhoto=async(req,res)=>{
+  console.log(req.body)
+  const {id}=req.body
+  console.log(req?.file?.path)
+
+  
+
+  try {
+    cloudinary.v2.config({
+      cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+      api_key: process.env.CLOUDINARY_API_KEY,
+      api_secret: process.env.CLOUDINARY_API_SECRET,
+    });
+  
+    let result = null;
+  
+    if (req?.file?.path) {
+      result = await cloudinary.v2.uploader.upload(req.file.path);
+    }
+    await User.findByIdAndUpdate(id,{image:result?.secure_url})
+    
+    res.status(200).send(result?.secure_url)
+  } catch (error) {
+    console.log(error);
+  }
+
+}
+
 //password reset
 const resetPassword = async (req, res, next) => {
   const { newPassword, resetToken } = req.body;
@@ -192,4 +228,6 @@ module.exports= {
   passwordResetRequest,
   getUserInfo,
   logout,
+  editProfile,
+  changePhoto
 };

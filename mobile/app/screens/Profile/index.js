@@ -4,42 +4,35 @@ import Layout from '../../Layout';
 import colors from '../../values/colors';
 import helpers from '../../helpers/helpers';
 import {useSelector} from 'react-redux';
-import CemeraIcon from 'react-native-vector-icons/Feather';
+
 import Chevron from 'react-native-vector-icons/EvilIcons'
+import { useNavigation } from '@react-navigation/native';
 
 const Profile = () => {
-  const user = useSelector(state => state.user.currentUser);
-  console.log(user);
-  const settings=[
-    {id:1,text:'Edit Profile'},
-    {id:2,text:'Language'},
-    {id:3,text:'Log out'},
-  ]
+  
+  
+  const navigation=useNavigation()
+  
 
-  const renderItem=({item})=>{
-    return(
-      <TouchableOpacity style={styles.setting}>
-        <Text style={styles.settingText}>{item.text}</Text>
-        <Chevron name='chevron-right' size={18}/>
-      </TouchableOpacity>
-    )
-  }
-  const Seperator=()=>{
-    return(
-      <View style={styles.line}></View>
-    )
-  }
+  
+  
   return (
     <Layout type={'general'} headerText={'Profile'} hasBackButton={false}>
       <View style={styles.container}>
         
+      <TouchableOpacity  onPress={()=>navigation.navigate('editProfile')} style={styles.setting}>
+        <Text style={styles.settingText}>Edit Profile</Text>
+        <Chevron name='chevron-right' size={18}/>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.setting}>
+        <Text style={styles.settingText}>Language</Text>
+        <Chevron name='chevron-right' size={18}/>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.setting}>
+        <Text style={styles.settingText}>Log out</Text>
+        <Chevron name='chevron-right' size={18}/>
+      </TouchableOpacity>
         
-        <FlatList
-        data={settings}
-        keyExtractor={item=>item.id}
-        renderItem={renderItem}
-        ItemSeparatorComponent={<Seperator/>}
-        />
       </View>
     </Layout>
   );
@@ -84,7 +77,9 @@ const styles = StyleSheet.create({
   setting:{
     flexDirection:'row',
     justifyContent:'space-between',
-    paddingVertical:helpers.px(8)
+    paddingVertical:helpers.px(8),
+    borderBottomWidth:1,
+    borderColor:colors.inputBorder
   },
   settingText:{
     ...helpers.fontStyle('Regular',16)

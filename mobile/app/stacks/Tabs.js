@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import { BlogDetail, Chat, CreateBlog, Dashboard, MyBlogs, Profile } from '../screens'
+import { BlogDetail, Chat, CreateBlog, Dashboard, EditProfile, MyBlogs, Profile } from '../screens'
 import helpers from '../helpers/helpers'
 import { isIphoneX } from 'react-native-iphone-x-helper'
 import AnimatedTabButton from '../components/AnimatedTabButton'
@@ -24,6 +24,15 @@ const MyBlogStack=()=>{
     <Stack.Navigator screenOptions={helpers.screenOptions}>
       <Stack.Screen name="myBlogs" component={MyBlogs}/>
       <Stack.Screen name="createBlog" component={CreateBlog}/>
+    </Stack.Navigator>
+  )
+}
+const AccountStack=()=>{
+  return (
+    <Stack.Navigator screenOptions={helpers.screenOptions}>
+      <Stack.Screen name="profile" component={Profile}/>
+      <Stack.Screen name="editProfile" component={EditProfile}/>
+     
     </Stack.Navigator>
   )
 }
@@ -92,7 +101,7 @@ const Tabs = () => {
         
         
         />
-        <Tab.Screen name="profile" component={Profile}
+        <Tab.Screen name="account" component={AccountStack}
         options={() => ({
             tabBarButton: props => {
              return ( <AnimatedTabButton

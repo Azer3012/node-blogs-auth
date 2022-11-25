@@ -9,6 +9,8 @@ const {
   passwordResetRequest,
   register,
   resetPassword,
+  editProfile,
+  changePhoto,
 } = require("../controllers/authController.js");
 const { authMiddleware } = require("./middleware/authMiddleware.js");
 const passport = require("passport");
@@ -60,6 +62,12 @@ router.post(
   passport.authenticate("jwt", { session: false }),
   logout
 );
+
+//edit profile info
+router.post('/edit',editProfile)
+
+//change photo
+router.post('/changePhoto',upload.single("image"),changePhoto)
 
 //login with google
 

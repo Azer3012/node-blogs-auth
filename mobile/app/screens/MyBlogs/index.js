@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
   createContainer: {},
   createBtn: {
     flexDirection: 'row',
-    height: helpers.px(30),
+    height: helpers.px(40),
     width: helpers.px(130),
     borderWidth: 1,
     borderColor: colors.inputBorder,

@@ -118,4 +118,24 @@ const styles = StyleSheet.create({
     zIndex: 30,
     elevation: 1,
   },
+  headerText: {
+    ...helpers.fontStyle('Bold', 18),
+    flexWrap: 'wrap',
+    textAlign: 'center',
+  },
+  backButton: {
+    borderWidth: helpers.px(1.5),
+    borderColor: colors.black,
+    borderRadius: helpers.px(8),
+    width: helpers.px(24),
+    height: helpers.px(24),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  backIcon: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    left: helpers.px(16),
+    position: 'absolute',
+  },
 });

@@ -18,6 +18,7 @@ import {setBlogList} from '../../redux/features/dashboardSlice';
 import BlogItem from '../../components/BlogItem';
 
 
+
 const Dashboard = () => {
   const [filter, setFilter] = useState('');
   const navigation = useNavigation();
@@ -59,8 +60,10 @@ const Dashboard = () => {
           keyExtractor={item => item._id}
           renderItem={({item}) => <BlogItem item={item} />}
           style={styles.flatList}
+          showsVerticalScrollIndicator={false}
         />
       </View>
+      
     </Layout>
   );
 };
@@ -80,11 +83,12 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     width: '60%',
+   
   },
   createContainer: {},
   createBtn: {
     flexDirection: 'row',
-    height: helpers.px(30),
+    height: helpers.px(40),
     width: helpers.px(130),
     borderWidth: 1,
     borderColor: colors.inputBorder,

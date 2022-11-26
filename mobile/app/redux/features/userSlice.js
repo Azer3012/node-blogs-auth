@@ -21,7 +21,6 @@ const UserSlice=createSlice({
             state.currentUser={...state.currentUser,image:action.payload}
         }
     },
-
 })
 
 export const {setUser,setLoading,changePhoto}=UserSlice.actions

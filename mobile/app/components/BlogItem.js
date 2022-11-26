@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     width: helpers.px(35),
     height: helpers.px(35),
     borderRadius: helpers.px(50),
-    resizeMode: 'contain',
+    resizeMode: 'cover',
   },
   titleAndAuthor: {
     paddingLeft: helpers.px(8),

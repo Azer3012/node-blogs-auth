@@ -1,4 +1,4 @@
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {ActivityIndicator, Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React, { useState } from 'react';
 import Layout from '../../Layout';
 import {useDispatch, useSelector} from 'react-redux';
@@ -9,7 +9,7 @@ import helpers from '../../helpers/helpers';
 import CemeraIcon from 'react-native-vector-icons/Feather';
 import CustomButton from '../../components/CustomButton';
 import { launchImageLibrary } from 'react-native-image-picker';
-import { changePhoto } from '../../redux/features/userSlice';
+import { changePhoto, setUser } from '../../redux/features/userSlice';
 
 const EditProfile = () => {
   const user = useSelector(state => state.user.currentUser);
@@ -19,11 +19,13 @@ const EditProfile = () => {
   const [email,setEmail]=useState(user.email)
   const [image,setImage]=useState(user.image)
   const [loading,setLoading]=useState(false)
+  
 
 
   const dispatch=useDispatch()
   const changeProfilePhoto=async()=>{
     try {
+      setLoading(true)
         await selectPhoto()
         const formData=new FormData()
 
@@ -41,6 +43,10 @@ const EditProfile = () => {
         
     } catch (error) {
         console.log(error);
+    }
+
+    finally{
+      setLoading(false)
     }
   }
 
@@ -79,6 +85,7 @@ const EditProfile = () => {
     try {
         setLoading(true)
         const response=await helpers.api().post('/edit',{...user,firstName,lastName,email})
+        dispatch(setUser(response.data))
     } catch (error) {
         console.log(error);
     }
@@ -91,6 +98,7 @@ const EditProfile = () => {
       <View style={styles.container}>
         <TouchableOpacity onPress={changeProfilePhoto}  style={styles.imageBtn}>
           <Image style={styles.image} source={{uri: user.image}} />
+         {loading &&<ActivityIndicator style={styles.loader} size={'small'} color={colors.buttonBakground}/>}
           <CemeraIcon style={styles.icon} color={colors.white} name='camera' size={16}/>
         </TouchableOpacity>
         <Text style={styles.fullName}>{user.firstName} {user.lastName}</Text>
@@ -103,7 +111,7 @@ const EditProfile = () => {
         <View style={styles.inputContainer}>
           <CustomInput value={email} setValue={setEmail}  placeholder={user.email} />
         </View>
-        <CustomButton text={"Edit"} onPress={setProfileInfo}/>
+        <CustomButton loading={loading} text={"Edit"} onPress={setProfileInfo}/>
       </View>
     </Layout>
   );
@@ -127,6 +135,15 @@ const styles = StyleSheet.create({
     alignSelf:'center',
     borderRadius:helpers.px(50),
     position:'relative',
+    
+  },
+  loader:{
+    position:'absolute',
+    left:helpers.px(20),
+    top:helpers.px(20),
+
+    width:helpers.px(30),
+    height:helpers.px(30)
     
   },
   image:{

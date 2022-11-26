@@ -88,7 +88,25 @@ const getUserInfo = (req, res) => {
 //edit
 const editProfile=async(req,res)=>{
 
-  console.log(req.body);
+  const {_id,firstName,lastName,email}=req.body
+
+
+
+ 
+
+ try {
+ await User.findByIdAndUpdate(_id,{firstName,lastName,email})
+ const user=await User.findById(_id).select('-password').exec()
+
+  res.status(200).send(user)
+  console.log(user);
+ } catch (error) {
+  res.send({
+    message:error
+  })
+ }
+
+ 
 
 }
 
@@ -116,7 +134,9 @@ const changePhoto=async(req,res)=>{
     
     res.status(200).send(result?.secure_url)
   } catch (error) {
-    console.log(error);
+    res.send({
+      message:error
+    })
   }
 
 }

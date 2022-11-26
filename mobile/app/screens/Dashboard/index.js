@@ -1,6 +1,7 @@
 import {
   FlatList,
   Image,
+  RefreshControl,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -24,6 +25,13 @@ const Dashboard = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const {list, error, loading} = useSelector(state => state.dashboard);
+  const [refreshing,setRefreshing]=useState(false)
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await getBlogList()
+    setRefreshing(false);
+  }
 
   const getBlogList = async () => {
     
@@ -61,6 +69,14 @@ const Dashboard = () => {
           renderItem={({item}) => <BlogItem item={item} />}
           style={styles.flatList}
           showsVerticalScrollIndicator={false}
+          refreshControl={
+            <RefreshControl
+              colors={[colors.main]}
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+            />
+  
+          }
         />
       </View>
       

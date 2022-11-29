@@ -36,7 +36,7 @@ const Dashboard = () => {
   const getBlogList = async () => {
     
     try {
-      const response = await helpers.api().get('/blogs', {filter});
+      const response = await helpers.api().get('/blogs');
       console.log(response);
       dispatch(setBlogList(response.data.list));
     } catch (error) {

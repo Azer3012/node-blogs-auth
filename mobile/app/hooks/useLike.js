@@ -15,7 +15,7 @@ const useLike=(blog,routeName)=>{
    
   
     const dispath=useDispatch()
-    const isIlikedBlog=blog?.likes?.includes(user._id)
+    const isIlikedBlog=blog?.likes?.includes(user?._id)
   
   
     const handleLike=async(id)=>{

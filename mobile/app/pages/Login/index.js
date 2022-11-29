@@ -35,7 +35,7 @@ const Login = () => {
     if(isValid){
       try {
         const response = await helpers.api().post('/login', {email, password});
-        console.log(response);
+        console.log({response});
         navigation.navigate('MainTab');
       } catch (error) {
         console.log(error);

@@ -7,7 +7,6 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
-import {actions, RichEditor, RichToolbar} from 'react-native-pell-rich-editor';
 import React, {useRef, useState} from 'react';
 import Layout from '../../Layout';
 

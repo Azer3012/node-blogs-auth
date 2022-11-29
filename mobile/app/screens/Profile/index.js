@@ -3,17 +3,28 @@ import React from 'react';
 import Layout from '../../Layout';
 import colors from '../../values/colors';
 import helpers from '../../helpers/helpers';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 
 import Chevron from 'react-native-vector-icons/EvilIcons'
 import { useNavigation } from '@react-navigation/native';
+import { setUser } from '../../redux/features/userSlice';
 
 const Profile = () => {
   
   
   const navigation=useNavigation()
+  const dispatch=useDispatch()
   
-
+const handleLogout=async()=>{
+  try {
+    const response=await helpers.api().post('/logout')
+    console.log(response);
+    dispatch(setUser(null))
+    navigation.navigate('login')
+  } catch (error) {
+    console.log(error);
+  }
+}
   
   
   return (
@@ -28,7 +39,7 @@ const Profile = () => {
         <Text style={styles.settingText}>Language</Text>
         <Chevron name='chevron-right' size={18}/>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.setting}>
+      <TouchableOpacity onPress={handleLogout} style={styles.setting}>
         <Text style={styles.settingText}>Log out</Text>
         <Chevron name='chevron-right' size={18}/>
       </TouchableOpacity>

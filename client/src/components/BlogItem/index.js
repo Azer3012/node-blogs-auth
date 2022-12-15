@@ -6,7 +6,7 @@ import moment from "moment";
 import useLike from "../../hooks/useLike";
 
 const BlogItem = ({ item }) => {
-  const blogContent = item?.body.replace(/<[^>]+>/g, "");
+  const blogContent = item?.body?.replace(/<[^>]+>/g, "");
 
   const [isIlikedBlog, handleLike] = useLike(item);
 

@@ -11,7 +11,7 @@ import debounce from 'lodash.debounce'
 import { fetchBlogsDashboard, setCurrentPageDashboard } from "../../redux/features/dashBoardSlice";
 
 const Dashboard = () => {
-  const { list, error, loading,currentPage,total } = useSelector((state) => state.dashboard);
+  const { list, loading,currentPage,total } = useSelector((state) => state.dashboard);
   const [filter,setFilter]=useState('')
 
   console.log(list);

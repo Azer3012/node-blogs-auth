@@ -40,9 +40,9 @@ app.use(cookieParser())
 app.use(express.urlencoded())
 
 app.use(cors({
-    // origin:process.env.CLIENT_URL,
+    origin:process.env.CLIENT_URL,
 
-    origin:process.env.MOBILE_URL,
+    // origin:process.env.MOBILE_URL,
     credentials:true
 }))
 

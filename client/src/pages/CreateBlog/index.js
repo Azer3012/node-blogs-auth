@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import ProtectedRoute from "../../components/ProtectedRoute";
-import { Button, Form, Input, message, Radio, Select } from "antd";
+import { Button, Form, Input, message,  Select } from "antd";
 import instance from "../../lib/axios";
 import { useNavigate } from "react-router-dom";
 import ReactQuill from 'react-quill';
@@ -50,7 +50,7 @@ const CreateBlog = () => {
          />
         </Form.Item>
         <Form.Item>
-          <Button htmlType="submit" type="primary">Submit</Button>
+          <Button disabled={loading} htmlType="submit" type="primary">Submit</Button>
         </Form.Item>
       </Form>
     </ProtectedRoute>

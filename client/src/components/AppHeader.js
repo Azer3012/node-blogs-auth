@@ -1,5 +1,5 @@
 import React from "react";
-import { Navigate, NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Avatar, Dropdown, Layout, Menu, Space, Typography } from "antd";
 import { DownOutlined } from "@ant-design/icons";
 import instance from "../lib/axios";

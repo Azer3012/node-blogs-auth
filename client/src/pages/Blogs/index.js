@@ -12,7 +12,7 @@ import "./styles.css";
 import { Link,useSearchParams } from "react-router-dom";
 import debounce from 'lodash.debounce'
 const Blogs = () => {
-  const { list, error, loading,currentPage,total } = useSelector((state) => state.blogs);
+  const { list,  loading,currentPage,total } = useSelector((state) => state.blogs);
   const [filter,setFilter]=useState('')
 
   const [searchParams,setSearchParams]=useSearchParams()

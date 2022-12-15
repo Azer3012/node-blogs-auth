@@ -1,6 +1,5 @@
 const express =require("express") 
 const { addCommentToBlog, createNewBlog, deleteBlog, getBlogs, getMyBlogs, likeBlog, selectedBlog, updateBlog } =require("../controllers/blogController.js") ;
-const { authMiddleware } =require("./middleware/authMiddleware.js") 
 const passport =require('passport')
 
 

@@ -1,55 +1,49 @@
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import instance from "../lib/axios";
+import { setLoading, setUser } from "../redux/features/UserSlice";
 
-import React, { useEffect, useState } from 'react'
-import { Navigate, useNavigate } from 'react-router-dom'
-import {useDispatch,useSelector} from 'react-redux'
-import instance from '../lib/axios'
-import { setLoading, setUser } from '../redux/features/UserSlice'
+const ProtectedRoute = ({ children }) => {
+  const navigate = useNavigate();
 
-const ProtectedRoute = ({children}) => {
-   const navigate=useNavigate()
-   
+  const [fetching, setFetching] = useState(true);
 
-   
-   const [fetching, setFetching] = useState(true);
+  const { loading } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
 
-   const {loading}=useSelector(state=>state.user)
-   const dispatch=useDispatch()
-
-   const getUser=async()=>{
-    setFetching(true)
+  const getUser = async () => {
+    setFetching(true);
     try {
-      const response=await instance.get('/getUser')
-      
+      const response = await instance.get("/getUser");
 
-    
       if (!response?.data) {
-        navigate('/auth/login');
+        navigate("/auth/login");
       } else {
-        
-        dispatch(setUser(response.data))
-       
+        dispatch(setUser(response.data));
       }
-
     } catch (error) {
       console.log(error);
-      navigate('/auth/login');
+      navigate("/auth/login");
+    } finally {
+      setFetching(false);
+      if (!fetching) {
+        dispatch(setLoading(false));
+      }
     }
-    finally{
-      setFetching(false)
-      dispatch(setLoading(false))
-    }
-   }
+  };
 
-   useEffect(()=>{
-    getUser()
-   },[])
+  useEffect(() => {
+    
+    getUser();
+    
+  }, []);
 
-   if (loading) {
+  if (loading) {
     return <h1>Authorizing...</h1>;
   }
 
-    
   return children;
-}
+};
 
-export default ProtectedRoute
+export default ProtectedRoute;

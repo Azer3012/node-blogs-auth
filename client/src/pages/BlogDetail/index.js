@@ -24,15 +24,10 @@ const Blog = () => {
   };
 
   useEffect(() => {
-    let cleanUp = true;
-    if (cleanUp) {
-      getBlog();
-    }
-    return () => {
-      cleanUp = false;
-    };
+    getBlog();
   }, [isIlikedBlog]);
 
+  
   const addComment = useCallback((comment) => {
     setBlog((prev) => {
       return {

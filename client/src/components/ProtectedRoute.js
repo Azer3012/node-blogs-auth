@@ -27,9 +27,9 @@ const ProtectedRoute = ({ children }) => {
       navigate("/auth/login");
     } finally {
       setFetching(false);
-      if (!fetching) {
-        dispatch(setLoading(false));
-      }
+      
+      dispatch(setLoading(false));
+      
     }
   };
 

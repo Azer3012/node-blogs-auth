@@ -1,0 +1,13 @@
+.container{
+    display: flex;
+}
+.users{
+    border-right: 1px solid rgb(186, 186, 186);
+    flex-basis: 30%;
+}
+.users .active{
+    background: #000 !important;
+}
+.inbox{
+    flex-basis: 70%;
+}

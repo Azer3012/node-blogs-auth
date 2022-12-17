@@ -10,6 +10,7 @@ import Chat from './pages/Chat';
 import CreateBlog from './pages/CreateBlog';
 import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
+import Messages from './pages/Messages';
 function App() {
   return (
     <Routes>
@@ -23,7 +24,9 @@ function App() {
         <Route path='blogs'element={<Blogs/>} /> 
         <Route path='create-blog'element={<CreateBlog/>} /> 
         <Route path='blog/:id'element={<Blog/>} /> 
-        <Route path='chat'element={<Chat/>} /> 
+        <Route path='chat'element={<Chat/>}>
+            <Route path=':userId' element={<Messages/>}/>
+        </Route>
         <Route path='*'element={<h1>404 Not found</h1>} /> 
       </Route>
      

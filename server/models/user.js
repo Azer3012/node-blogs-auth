@@ -17,7 +17,11 @@ const UserSchema = mongoose.Schema(
         "https://res.cloudinary.com/dmuz6ggje/image/upload/v1668182918/follower_olykor.png",
     },
     oAuthProvider:String,
-    oAuthId:String
+    oAuthId:String,
+    online:{
+      type:Boolean,
+      defaultL:()=>false
+    }
   },
 
   {

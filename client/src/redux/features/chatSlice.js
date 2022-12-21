@@ -22,7 +22,13 @@ const initialState={
 const chatSlice=createSlice({
     name:'chat',
     initialState,
-    reducers:{},
+    reducers:{
+        setUserOnline:(state,action)=>{
+            const {userId,isOnline}=action.payload;
+            const user=state.users.list.find(u=>u._id===userId)
+            user.online=isOnline
+        }
+    },
     extraReducers:builder=>{
         builder.addCase(fetchUsers.pending, state => {
             
@@ -42,4 +48,5 @@ const chatSlice=createSlice({
     }
 })
 
+export const {setUserOnline}=chatSlice.actions;
 export default chatSlice.reducer;

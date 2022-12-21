@@ -18,6 +18,8 @@ const cookieParser  =require('cookie-parser')
 const passport  =require('passport') 
 const Stripe  =require('stripe') 
 
+const setupSocket=require('./socket')
+
 
 dotenv.config()
 
@@ -140,6 +142,8 @@ const httpsServer=https.createServer({
 
 },app)
 
+setupSocket(httpServer)
+
 
 httpServer.listen(8000,()=>console.log('app http listening'))
-// httpsServer.listen(5000,()=>console.log('app https listening'))
+httpsServer.listen(5000,()=>console.log('app https listening'))

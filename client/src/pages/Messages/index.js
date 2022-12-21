@@ -9,8 +9,26 @@ const Messages = () => {
     useEffect(()=>{
       socket.emit('join room',userId)
     },[])
+
+    const onSubmit=(event)=>{
+      event.preventDefault()
+
+      const {message}=event.target.elements;
+
+      console.log(message);
+
+      socket.emit("send message",{userId,content:message.value})
+
+
+
+    }
   return (
-    <div>Messages</div>
+    <div>
+      <form onSubmit={onSubmit}>
+        <textarea name='message' rows={5} placeholder="Send Message"/>
+        <button>Send</button>
+      </form>
+    </div>
   )
 }
 

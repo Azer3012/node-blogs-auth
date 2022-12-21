@@ -1,6 +1,7 @@
 const cookie = require("cookie");
 
 const jwt = require("jsonwebtoken");
+const Message = require("./models/messages");
 const User = require("./models/user");
 
 module.exports = (httpserver) => {
@@ -25,23 +26,38 @@ module.exports = (httpserver) => {
     console.log(userInfo);
     //Todo check if expired
 
+    //user chat sehifesine qosulmasi
     socket.join(userInfo._id);
     await User.findByIdAndUpdate(userInfo._id, { online: true });
 
-    //qosulan dioger userlere gonderir qosulan useri
+    //qosulan diger userlere gonderir qosulan useri
     socket.broadcast.emit("user online", userInfo._id);
 
-    //room-a qosulmaq ucun
 
+    //room-a qosulmaq ucun
     socket.on("join room", (userId) => {
       socket.join(userId);
       socket.broadcast.emit("new user", userId);
       console.log("joined" + userId);
     });
 
+    //user chat sehifesinden cixanda ofline edig diger userlere offline oldugunu gonderir
     socket.on("disconnecting", async () => {
       socket.broadcast.emit("user offline", userInfo._id);
       await User.findByIdAndUpdate(userInfo._id, { online: false });
     });
+
+
+    //mesaj gondermek
+    socket.on('send message',async(data)=>{
+        const {userId,content}=data;
+        const message=new Message({
+            fromUser:userInfo._id,
+            toUser:userId,
+            content
+        })
+        await message.save()
+        socket.to(userId).emit('new message',message)
+    })
   });
 };

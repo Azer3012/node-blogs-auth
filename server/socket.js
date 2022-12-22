@@ -4,6 +4,9 @@ const jwt = require("jsonwebtoken");
 const Message = require("./models/messages");
 const User = require("./models/user");
 
+
+const roomMap={}
+
 module.exports = (httpserver) => {
   const { Server } = require("socket.io");
   const io = new Server(httpserver, {
@@ -27,7 +30,9 @@ module.exports = (httpserver) => {
     //Todo check if expired
 
     //user chat sehifesine qosulmasi
-    socket.join(userInfo._id);
+    socket.join(socket.id);
+
+    roomMap[userInfo._id]=socket.id
     await User.findByIdAndUpdate(userInfo._id, { online: true });
 
     //qosulan diger userlere gonderir qosulan useri
@@ -36,7 +41,8 @@ module.exports = (httpserver) => {
 
     //room-a qosulmaq ucun
     socket.on("join room", (userId) => {
-      socket.join(userId);
+        const roomName=roomMap[userId]
+      socket.join(roomName);
       socket.broadcast.emit("new user", userId);
       console.log("joined" + userId);
     });
@@ -63,7 +69,9 @@ module.exports = (httpserver) => {
             createdAt:message.createdAt,
             fromMySelf:false
         }
-        socket.to(userId).emit('new message',formattedMessage)
+        const roomName=roomMap[userId]
+
+        socket.to(roomName).emit('new message',formattedMessage)
     })
   });
 };

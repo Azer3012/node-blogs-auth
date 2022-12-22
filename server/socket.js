@@ -67,7 +67,8 @@ module.exports = (httpserver) => {
             _id:message._id,
             content:message.content,
             createdAt:message.createdAt,
-            fromMySelf:false
+            fromMySelf:false,
+            fromUser:userInfo._id
         }
         const roomName=roomMap[userId]
 

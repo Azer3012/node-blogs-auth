@@ -5,7 +5,7 @@ import { Avatar, List, Skeleton,Badge } from "antd";
 import { UserOutlined } from '@ant-design/icons';
 import "./styles.css";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchUsers, setUserOnline } from "../../redux/features/chatSlice";
+import { fetchUsers, incrementUnreadMesages, newMessage, setUserOnline } from "../../redux/features/chatSlice";
 import socket from "../../lib/io";
 const Chat = () => {
   const { list, total, error, loading } = useSelector(
@@ -31,10 +31,17 @@ const Chat = () => {
         isOnline:false
       }))
     })
+    socket.on("new message", (message) => {
+      const {fromUser,...rest}=message
+      dispatch(newMessage({ message:rest, userId:fromUser }));
+      dispatch(incrementUnreadMesages(fromUser))
+      
+    });
 
     return ()=>{
       socket.off("user online");
       socket.off("user offline")
+      socket.off("new message")
       socket.close()
     }
   },[])
@@ -64,6 +71,7 @@ const Chat = () => {
                       // description="Ant Design, a design language for background applications, is refined by Ant UED Team"
                     />
                      </Skeleton>
+                     <Badge count={item.unreadMessages}/>
                   </List.Item>
                 </NavLink>
              

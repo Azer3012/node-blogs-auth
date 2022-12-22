@@ -55,6 +55,19 @@ const getUserMessages = async (req, res) => {
   }
 };
 
+const readMessage=async(req,res)=>{
+
+    const fromUser=req.params.userId
+    try {
+        await Message.updateMany({fromUser,read:false},{read:true})
+        res.status(200).send()
+    } catch (error) {
+        res.send({
+            message:error
+        })
+    }
+}
 module.exports = {
   getUserMessages,
+  readMessage
 };

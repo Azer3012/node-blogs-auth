@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
 import socket from "../../lib/io";
-import { fetchMessages, newMessage } from "../../redux/features/chatSlice";
+import { fetchMessages, incrementUnreadMesages, newMessage } from "../../redux/features/chatSlice";
 import "./styles.css";
 
 const Messages = () => {
@@ -40,18 +40,13 @@ const Messages = () => {
   useEffect(() => {
     socket.emit("join room", userId);
 
-    socket.on("new message", (message) => {
-      dispatch(newMessage({ message, userId }));
-      scrollToEnd();
-    });
+   
 
     dispatch(fetchMessages(userId));
 
     
 
-    return () => {
-      socket.off("new message");
-    };
+    
   }, [userId]);
 
   useEffect(()=>{

@@ -8,6 +8,7 @@ const mongoSantize  =require('express-mongo-sanitize')
 const authRouter  =require('./routes/auth.js') 
 const blogRouter  =require('./routes/blog.js') 
 const userRouter  =require('./routes/users.js') 
+const messageRouter=require('./routes/messages')
 const dotenv  =require('dotenv') 
 const rateLimit  =require('express-rate-limit') 
 const errorMiddleware  =require('./routes/middleware/errorMiddleware.js') 
@@ -86,6 +87,7 @@ app.use(limiter)
 app.use('/api/v1',authRouter)
 app.use('/api/v1',blogRouter)
 app.use('/api/v1',userRouter)
+app.use('/api/v1',messageRouter)
 
 
 app.get("/",(req,res)=>{

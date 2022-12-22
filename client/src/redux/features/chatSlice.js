@@ -5,6 +5,11 @@ export const fetchUsers=createAsyncThunk('chat/fetchUsers',()=>{
 })
 
 
+export const fetchMessages=createAsyncThunk('chat/fetchMessages',(userId)=>{
+    return instance.get(`messages/${userId}`).then(response=>response.data)
+})
+
+
 
 
 const initialState={
@@ -15,6 +20,7 @@ const initialState={
         loading:true
 
     },
+    messages:{}
     
     
 }
@@ -30,6 +36,8 @@ const chatSlice=createSlice({
         }
     },
     extraReducers:builder=>{
+
+        //fecthusers
         builder.addCase(fetchUsers.pending, state => {
             
         });
@@ -43,6 +51,24 @@ const chatSlice=createSlice({
             state.users.loading=false;
             state.users.error=action.error
         });
+
+
+        //fetch messages
+        builder.addCase(fetchMessages.pending, state => {
+            
+        });
+        builder.addCase(fetchMessages.fulfilled, (state,action) => {
+            // state.messages[action.payload]
+
+            const userId=action.meta.arg
+
+           const messages=action.payload;
+           state.messages[userId]=messages
+        });
+        builder.addCase(fetchMessages.rejected, (state,action) => {
+           
+        });
+
         
         
     }

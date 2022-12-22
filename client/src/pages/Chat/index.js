@@ -53,9 +53,11 @@ const Chat = () => {
                     <List.Item.Meta
                       avatar={<Badge color="green" dot={item.online} ><Avatar src={item.image} /></Badge>}
                       title={
-                        <a href="https://ant.design">
-                          {item.firstName} {item.lastName}
-                        </a>
+                          <p>
+                            {item.firstName} {item.lastName}
+                          </p>
+                          
+                       
                       }
                       // description="Ant Design, a design language for background applications, is refined by Ant UED Team"
                     />

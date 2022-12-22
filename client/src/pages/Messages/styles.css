@@ -1,0 +1,25 @@
+.messages-container{
+
+}
+.messages{
+list-style: none;
+/* width: 100%; */
+padding: 0;
+
+}
+.message{
+    display: flex;
+}
+
+.message-box{
+    padding: 10px 24px;
+    /* width: 100%; */
+    border-radius: 10px;
+}
+
+.textarea{
+
+}
+.submitBtn{
+
+}

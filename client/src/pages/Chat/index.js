@@ -33,6 +33,8 @@ const Chat = () => {
     })
 
     return ()=>{
+      socket.off("user online");
+      socket.off("user offline")
       socket.close()
     }
   },[])

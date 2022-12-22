@@ -34,6 +34,16 @@ const chatSlice=createSlice({
             const user=state.users.list.find(u=>u._id===userId)
             user.online=isOnline
         },
+        incrementUnreadMesages:(state,action)=>{
+            const userId=action.payload;
+            const user=state.users.list.find(u=>u._id===userId)
+            user.unreadMessages++;
+        },
+        resetUnreadMesages:(state,action)=>{
+            const userId=action.payload;
+            const user=state.users.list.find(u=>u._id===userId)
+            user.unreadMessages=0;
+        },
         newMessage:(state,action)=>{
             const {userId,message}=action.payload;
             const messages=state.messages[userId] || []
@@ -80,5 +90,5 @@ const chatSlice=createSlice({
     }
 })
 
-export const {setUserOnline,newMessage}=chatSlice.actions;
+export const {setUserOnline,newMessage,incrementUnreadMesages,resetUnreadMesages}=chatSlice.actions;
 export default chatSlice.reducer;

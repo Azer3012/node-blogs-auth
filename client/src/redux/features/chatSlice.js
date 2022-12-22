@@ -33,6 +33,12 @@ const chatSlice=createSlice({
             const {userId,isOnline}=action.payload;
             const user=state.users.list.find(u=>u._id===userId)
             user.online=isOnline
+        },
+        newMessage:(state,action)=>{
+            const {userId,message}=action.payload;
+            const messages=state.messages[userId] || []
+            messages.push(message)
+            state.messages[userId]=messages
         }
     },
     extraReducers:builder=>{
@@ -74,5 +80,5 @@ const chatSlice=createSlice({
     }
 })
 
-export const {setUserOnline}=chatSlice.actions;
+export const {setUserOnline,newMessage}=chatSlice.actions;
 export default chatSlice.reducer;

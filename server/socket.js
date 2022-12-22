@@ -57,7 +57,13 @@ module.exports = (httpserver) => {
             content
         })
         await message.save()
-        socket.to(userId).emit('new message',message)
+        const formattedMessage={
+            _id:message._id,
+            content:message.content,
+            createdAt:message.createdAt,
+            fromMySelf:false
+        }
+        socket.to(userId).emit('new message',formattedMessage)
     })
   });
 };

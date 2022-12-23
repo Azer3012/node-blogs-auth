@@ -5,7 +5,7 @@ const Message = require("./models/messages");
 const User = require("./models/user");
 
 
-const roomMap={}
+
 
 module.exports = (httpserver) => {
   const { Server } = require("socket.io");
@@ -30,9 +30,9 @@ module.exports = (httpserver) => {
     //Todo check if expired
 
     //user chat sehifesine qosulmasi
-    socket.join(socket.id);
+    socket.join(userInfo._id);
 
-    roomMap[userInfo._id]=socket.id
+   
     await User.findByIdAndUpdate(userInfo._id, { online: true });
 
     //qosulan diger userlere gonderir qosulan useri
@@ -41,8 +41,8 @@ module.exports = (httpserver) => {
 
     //room-a qosulmaq ucun
     socket.on("join room", (userId) => {
-        const roomName=roomMap[userId]
-      socket.join(roomName);
+       
+      socket.join(userId);
       socket.broadcast.emit("new user", userId);
       console.log("joined" + userId);
     });
@@ -70,9 +70,9 @@ module.exports = (httpserver) => {
             fromMySelf:false,
             fromUser:userInfo._id
         }
-        const roomName=roomMap[userId]
+       
 
-        socket.to(roomName).emit('new message',formattedMessage)
+        socket.to(userId).emit('new message',formattedMessage)
     })
   });
 };

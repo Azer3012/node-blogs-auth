@@ -9,6 +9,10 @@ export const fetchMessages=createAsyncThunk('chat/fetchMessages',(userId)=>{
     return instance.get(`messages/${userId}`).then(response=>response.data)
 })
 
+export const readMessages=createAsyncThunk('chat/readMessages',(userId)=>{
+    return instance.put(`messages/${userId}/read`)
+})
+
 
 
 
@@ -82,6 +86,19 @@ const chatSlice=createSlice({
            state.messages[userId]=messages
         });
         builder.addCase(fetchMessages.rejected, (state,action) => {
+           
+        });
+
+        //read messages
+        builder.addCase(readMessages.pending, state => {
+            
+        });
+        builder.addCase(readMessages.fulfilled, (state,action) => {
+            const userId=action.meta.arg;
+            const user=state.users.list.find(u=>u._id===userId)
+            user.unreadMessages=0;
+        });
+        builder.addCase(readMessages.rejected, (state,action) => {
            
         });
 

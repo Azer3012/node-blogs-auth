@@ -57,6 +57,8 @@ const getUserMessages = async (req, res) => {
 
 const readMessage=async(req,res)=>{
 
+    console.log('read');
+
     const fromUser=req.params.userId
     try {
         await Message.updateMany({fromUser,read:false},{read:true})

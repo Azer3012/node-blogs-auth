@@ -42,15 +42,18 @@ const Messages = () => {
       });
     });
   };
+  useEffect(()=>{
+    socket.emit("join room", userId);
+    dispatch(fetchMessages(userId));
+
+  },[userId])
 
   useEffect(() => {
-    socket.emit("join room", userId);
+    
 
     const chatUser = chatUsers.find((user) => user._id === userId);
-    if (chatUser) {
-      dispatch(fetchMessages(userId));
-    }
-    if (chatUser && chatUser.unreadMessages.length > 0) {
+    
+    if (chatUser && chatUser.unreadMessages > 0) {
       dispatch(readMessages(userId));
     }
   }, [userId, chatUsers]);

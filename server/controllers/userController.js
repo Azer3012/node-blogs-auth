@@ -7,7 +7,7 @@ const getUsers = async (req, res) => {
   console.log(currentUserId);
   try {
     const users = await User.aggregate([
-      {$match:{_id:{$ne:currentUserId}}},
+      {$match:{_id:{$ne:mongoose.Types.ObjectId(currentUserId)}}},
       {
         $lookup:{
           from:"messages",
@@ -24,6 +24,7 @@ const getUsers = async (req, res) => {
           lastName:1,
           image:1,
           online:1,
+          onAuthProvider:1,
           unreadMessages:{
             $filter:{
               input:"$unreadMessages",
@@ -46,6 +47,7 @@ const getUsers = async (req, res) => {
           lastName:1,
           image:1,
           online:1,
+          onAuthProvider:1,
 
           unreadMessages:{
             $size:"$unreadMessages"

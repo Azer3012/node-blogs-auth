@@ -6,7 +6,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
 import socket from "../../lib/io";
-import { fetchMessages, incrementUnreadMesages, newMessage } from "../../redux/features/chatSlice";
+import {
+  fetchMessages,
+  incrementUnreadMesages,
+  newMessage,
+  readMessages,
+} from "../../redux/features/chatSlice";
 import "./styles.css";
 
 const Messages = () => {
@@ -14,9 +19,10 @@ const Messages = () => {
   console.log(userId);
 
   const messagesRef = useRef();
-  const [form] =Form.useForm()
+  const [form] = Form.useForm();
 
   const messages = useSelector((state) => state.chat.messages[userId]);
+  const chatUsers = useSelector((state) => state.chat.users.list);
   const dispatch = useDispatch();
 
   const mineStyle = {
@@ -40,35 +46,32 @@ const Messages = () => {
   useEffect(() => {
     socket.emit("join room", userId);
 
-   
+    const chatUser = chatUsers.find((user) => user._id === userId);
+    if (chatUser) {
+      dispatch(fetchMessages(userId));
+    }
+    if (chatUser && chatUser.unreadMessages.length > 0) {
+      dispatch(readMessages(userId));
+    }
+  }, [userId, chatUsers]);
 
-    dispatch(fetchMessages(userId));
-
-    
-
-    
-  }, [userId]);
-
-  useEffect(()=>{
+  useEffect(() => {
     scrollToEnd();
-  },[messages])
+  }, [messages]);
 
   const onSubmit = (values) => {
-  
-    socket.emit("send message", { userId, content:values.content });
+    socket.emit("send message", { userId, content: values.content });
 
     const messageData = {
       _id: Math.random(),
-      content:values.content,
+      content: values.content,
       createdAt: new Date().toISOString(),
       fromMySelf: true,
     };
 
     dispatch(newMessage({ message: messageData, userId }));
 
-    form.resetFields()
-
-   
+    form.resetFields();
   };
   return (
     <div className="messages-container">
@@ -92,7 +95,6 @@ const Messages = () => {
           </li>
         ))}
       </ul>
-      
 
       <Form form={form} layout="inline" onFinish={onSubmit}>
         <Form.Item

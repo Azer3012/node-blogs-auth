@@ -9,6 +9,6 @@ const router = express.Router();
 router.use(passport.authenticate("jwt",{session:false}))
 
 router.get('/messages/:userId',getUserMessages)
-router.put('messages/:userId/read',readMessage)
+router.put('/messages/:userId/read',readMessage)
 
 module.exports= router;
